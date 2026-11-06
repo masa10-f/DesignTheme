@@ -31,7 +31,7 @@
 ![01 Brown & Orange の色見本](dist/01/swatches.svg)
 
 - slug: `brown-orange` / 状態: `active`
-- 出典: 種色は I-Lab Research Palette（研究ミーティング用 PPTX のテーマ配色）の accent1〜3。それ以外は scripts/derive.py で導出
+- 出典: 種色はユーザー指定（2026-11-06）。それ以外は scripts/derive.py で導出
 - フォント: 欧文 Arial（代替: Helvetica, sans-serif）、和文 Meiryo UI（代替: Hiragino Sans, Noto Sans JP, sans-serif）
 - 使い方のルール: [themes/01-brown-orange/README.md](themes/01-brown-orange/README.md) ・ 正本: [themes/01-brown-orange/theme.json](themes/01-brown-orange/theme.json) ・ 生成物: [dist/01/](dist/01/)
 
@@ -83,7 +83,7 @@
 ![02 Beige & Navy の色見本](dist/02/swatches.svg)
 
 - slug: `beige-navy` / 状態: `active`
-- 出典: 種色は I-Lab Research Palette（研究ミーティング用 PPTX のテーマ配色）の accent4〜6。それ以外は scripts/derive.py で導出
+- 出典: 種色はユーザー指定（2026-11-06）。それ以外は scripts/derive.py で導出
 - フォント: 欧文 Arial（代替: Helvetica, sans-serif）、和文 Meiryo UI（代替: Hiragino Sans, Noto Sans JP, sans-serif）
 - 使い方のルール: [themes/02-beige-navy/README.md](themes/02-beige-navy/README.md) ・ 正本: [themes/02-beige-navy/theme.json](themes/02-beige-navy/theme.json) ・ 生成物: [dist/02/](dist/02/)
 
@@ -383,8 +383,6 @@ WCAG のコントラスト比は色の明るさ（相対輝度）だけで決ま
 
 - [ ] `chart.series`（グラフの系列色）は 4 テーマとも **暫定案・要確認**（`"status": "provisional"`）。実際の図で確認できたら `"confirmed"` にする。
 - [ ] テーマ 02 の `accent`（種色のアクセント `cool-gray-67`）は白地で約 2.5:1 で、線・図形の基準 3:1 にも届かない。種色を変えるか、このまま装飾的な線にとどめるか要判断。
-- [ ] 01・02 は種色だけを PPTX テンプレート（テーマ配色 accent1〜6）から取り、文字色・グレー・カテゴリラベルなどは導出し直した。PPTX のスライドマスターが直接指定している色（`#242424`、`#666666`、`#C4B2AB`、`#77736C`、`#F7F7F6`、`#E2E1DD`、`#777777`）とは一致しない。PPTX 側をこのリポジトリに合わせるか要判断。
-- [ ] `sources/` に PPTX テンプレートが置かれていないため、PPTX との照合は未実施。置いたら `python scripts/check.py --pptx sources/<ファイル>.pptx` で照合する。
 - [ ] 等幅フォント（コード表示用）は未定義。
-- [ ] リンク色の role はない（PPTX の hlink / folHlink は palette に入れていない）。Web で使うなら `link` などの role を全テーマ共通で追加するか検討する。
+- [ ] リンク色の role はない。Web で使うなら `link` などの role を全テーマ共通で追加するか検討する。
 - [ ] グラフのグリッド線などの色は未定義のため、`theme.mplstyle` では設定していない（matplotlib の既定値のまま）。

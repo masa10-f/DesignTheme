@@ -29,7 +29,7 @@ def test_repository_has_no_errors():
 def test_contrast_ratio_reference_values():
     assert tl.contrast_ratio("#FFFFFF", "#000000") == pytest.approx(21.0)
     assert tl.contrast_ratio("#000000", "#FFFFFF") == pytest.approx(21.0)
-    assert tl.contrast_ratio("#77736C", "#DCD5C8") == pytest.approx(3.23, abs=0.01)
+    assert tl.contrast_ratio("#767676", "#FFFFFF") == pytest.approx(4.54, abs=0.01)
     assert tl.contrast_ratio("#DC5F36", "#FFFFFF") == pytest.approx(3.66, abs=0.01)
     # 表示は切り捨て（4.4999 を 4.50 と表示しない）
     assert tl.format_ratio(4.4999) == "4.49:1"
@@ -91,7 +91,11 @@ def test_directory_name_must_match_id_and_slug(repo_copy: Path):
 
 
 def test_duplicate_pptx_slot_is_error(repo_copy: Path):
-    edit_theme(repo_copy, "01-brown-orange", lambda d: d["palette"]["orange-56"].update(pptx_slot="accent1"))
+    def two_slots(d):
+        d["palette"]["brown-30"]["pptx_slot"] = "accent1"
+        d["palette"]["orange-56"]["pptx_slot"] = "accent1"
+
+    edit_theme(repo_copy, "01-brown-orange", two_slots)
     assert any("pptx_slot 'accent1'" in f.message for f in errors(check.run_checks(repo_copy)))
 
 
@@ -174,11 +178,24 @@ def test_schema_and_themes_agree_with_jsonschema():
 # --------------------------------------------------------------------------- PPTX との照合
 
 A = "http://schemas.openxmlformats.org/drawingml/2006/main"
+# 照合テスト用の架空のテーマ配色。accent1〜3 をテーマ 03 の種色にしておく
 SLOTS = {
-    "dk1": "242424", "lt1": "FFFFFF", "dk2": "0E2841", "lt2": "E8E8E8",
-    "accent1": "70372C", "accent2": "DC5F36", "accent3": "F7E3AF", "accent4": "DCD5C8",
-    "accent5": "A2A2AD", "accent6": "1F1E63", "hlink": "467886", "folHlink": "96607D",
+    "dk1": "000000", "lt1": "FFFFFF", "dk2": "333333", "lt2": "EEEEEE",
+    "accent1": "303967", "accent2": "E60012", "accent3": "FFE200", "accent4": "111111",
+    "accent5": "222222", "accent6": "444444", "hlink": "0000FF", "folHlink": "800080",
 }
+SLOTTED = {"navy-25": "accent1", "red-48": "accent2", "yellow-90": "accent3", "white": "lt1"}
+
+
+def with_slots(repo: Path) -> Path:
+    """テーマ 03 の種色と白に pptx_slot を付ける（公開リポジトリのテーマには付けていない）。"""
+
+    def add(d):
+        for name, slot in SLOTTED.items():
+            d["palette"][name]["pptx_slot"] = slot
+
+    edit_theme(repo, "03-navy-red", add)
+    return repo
 
 
 def make_pptx(path: Path, slots: dict, literals: list) -> Path:
@@ -188,7 +205,7 @@ def make_pptx(path: Path, slots: dict, literals: list) -> Path:
         return f'<a:{slot}><a:srgbClr val="{val}"/></a:{slot}>'
 
     theme_xml = (
-        f'<a:theme xmlns:a="{A}" name="T"><a:themeElements><a:clrScheme name="I-Lab Research Palette">'
+        f'<a:theme xmlns:a="{A}" name="T"><a:themeElements><a:clrScheme name="Test Palette">'
         + "".join(color(k, v) for k, v in slots.items())
         + "</a:clrScheme></a:themeElements></a:theme>"
     )
@@ -204,27 +221,34 @@ def make_pptx(path: Path, slots: dict, literals: list) -> Path:
     )
     with zipfile.ZipFile(path, "w") as z:
         z.writestr("ppt/theme/theme1.xml", theme_xml)
-        z.writestr("ppt/theme/theme2.xml", theme_xml.replace("70372C", "000000"))  # ノートマスター用など（無視される）
+        z.writestr("ppt/theme/theme2.xml", theme_xml.replace("303967", "000000"))  # ノートマスター用など（無視される）
         z.writestr("ppt/slideMasters/slideMaster1.xml", f'<p:sldMaster xmlns:p="p" xmlns:a="{A}"/>')
         z.writestr("ppt/slideMasters/_rels/slideMaster1.xml.rels", rels)
         z.writestr("ppt/slideLayouts/slideLayout1.xml", layout)
     return path
 
 
-def test_pptx_matching_template_reports_no_mismatch(tmp_path: Path):
-    pptx = make_pptx(tmp_path / "t.pptx", SLOTS, ["DCD5C8", "1F1E63"])
-    found = check.compare_pptx(pptx, REPO)
+def test_pptx_matching_template_reports_no_mismatch(repo_copy: Path, tmp_path: Path):
+    pptx = make_pptx(tmp_path / "t.pptx", SLOTS, ["303967", "5D5E62"])
+    found = check.compare_pptx(pptx, with_slots(repo_copy))
     assert not [f for f in found if f.level in ("error", "warning")]
-    # pptx_slot を持つのは PPTX 由来の 01・02 だけ（03・04 は照合しない）
-    assert sum("pptx_slot はすべて一致" in f.message for f in found) == 2
-    assert sum("pptx_slot がないため照合しない" in f.message for f in found) == 2
+    # pptx_slot を付けたテーマ 03 だけを照合する
+    assert sum("pptx_slot はすべて一致" in f.message for f in found) == 1
+    assert sum("pptx_slot がないため照合しない" in f.message for f in found) == 3
 
 
-def test_pptx_mismatch_is_reported_without_changing_themes(tmp_path: Path):
-    before = {p: p.read_bytes() for p in (REPO / "themes").glob("*/theme.json")}
-    pptx = make_pptx(tmp_path / "t.pptx", {**SLOTS, "accent4": "DDD5C8"}, ["123456"])
-    found = check.compare_pptx(pptx, REPO)
+def test_pptx_mismatch_is_reported_without_changing_themes(repo_copy: Path, tmp_path: Path):
+    root = with_slots(repo_copy)
+    before = {p: p.read_bytes() for p in (root / "themes").glob("*/theme.json")}
+    pptx = make_pptx(tmp_path / "t.pptx", {**SLOTS, "accent2": "E60013"}, ["123456"])
+    found = check.compare_pptx(pptx, root)
     messages = [f.message for f in found if f.level == "warning"]
-    assert any("accent4" in m and "#DCD5C8" in m and "#DDD5C8" in m for m in messages)
+    assert any("accent2" in m and "#E60012" in m and "#E60013" in m for m in messages)
     assert any("#123456" in m for m in messages)
     assert {p: p.read_bytes() for p in before} == before
+
+
+def test_public_themes_have_no_pptx_slots():
+    # 公開リポジトリのテーマには、元資料に固有のスロット番号を残さない
+    for path in (REPO / "themes").glob("*/theme.json"):
+        assert "pptx_slot" not in path.read_text(encoding="utf-8"), path

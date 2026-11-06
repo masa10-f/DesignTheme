@@ -10,7 +10,7 @@ import check
 import colorlib as cl
 import derive
 import themelib as tl
-from conftest import REPO
+from conftest import REPO, edit_theme
 
 REPO_SEEDS = [
     "#70372C", "#DC5F36", "#F7E3AF", "#DCD5C8", "#A2A2AD", "#1F1E63",
@@ -149,12 +149,23 @@ def test_light_seed_is_adjusted_only_where_it_must_carry_text(repo_copy: Path):
 
 
 def test_rederive_keeps_pptx_slots(repo_copy: Path):
-    before = load(repo_copy, "01-brown-orange")
-    assert run_derive(repo_copy, "01", "--force") == 0
-    after = load(repo_copy, "01-brown-orange")
-    assert after == before
-    assert after["palette"]["brown-30"]["pptx_slot"] == "accent1"
+    def add(d):
+        d["palette"]["navy-25"]["pptx_slot"] = "accent1"
+        d["palette"]["white"]["pptx_slot"] = "lt1"
+
+    edit_theme(repo_copy, "03-navy-red", add)
+    assert run_derive(repo_copy, "03", "--force") == 0
+    after = load(repo_copy, "03-navy-red")
+    assert after["palette"]["navy-25"]["pptx_slot"] == "accent1"
     assert after["palette"]["white"]["pptx_slot"] == "lt1"
+
+
+def test_committed_themes_are_reproducible(repo_copy: Path):
+    # 記録済みの種色から作り直すと、コミット済みの theme.json と同じになる
+    for theme_id, dirname in (("01", "01-brown-orange"), ("02", "02-beige-navy"), ("03", "03-navy-red"), ("04", "04-slate-teal")):
+        before = (repo_copy / "themes" / dirname / "theme.json").read_bytes()
+        assert run_derive(repo_copy, theme_id, "--force") == 0
+        assert (repo_copy / "themes" / dirname / "theme.json").read_bytes() == before, dirname
 
 
 def test_derive_refuses_bad_requests(repo_copy: Path, capsys):
