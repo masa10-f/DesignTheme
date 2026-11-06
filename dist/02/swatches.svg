@@ -3,52 +3,58 @@
   <rect width="720" height="468" fill="#FFFFFF"/>
   <rect width="720" height="64" fill="#DCD5C8"/>
   <text x="24" y="41" font-size="22" fill="#1F1E63" font-weight="bold">02  Beige &amp; Navy</text>
-  <text x="696" y="40" font-size="12" fill="#77736C" font-weight="bold" text-anchor="end" letter-spacing="1">CATEGORY</text>
-  <rect x="24.5" y="84.5" width="47" height="27" rx="3" fill="#FFFFFF" stroke="#E2E1DD"/>
-  <text x="84" y="96" font-size="14" fill="#242424">background</text>
-  <text x="84" y="111" font-size="11" fill="#666666">#FFFFFF · white</text>
-  <rect x="24.5" y="124.5" width="47" height="27" rx="3" fill="#242424" stroke="#E2E1DD"/>
-  <text x="84" y="136" font-size="14" fill="#242424">text</text>
-  <text x="84" y="151" font-size="11" fill="#666666">#242424 · gray-900</text>
-  <rect x="24.5" y="164.5" width="47" height="27" rx="3" fill="#666666" stroke="#E2E1DD"/>
-  <text x="84" y="176" font-size="14" fill="#242424">text-secondary</text>
-  <text x="84" y="191" font-size="11" fill="#666666">#666666 · gray-600</text>
-  <rect x="24.5" y="204.5" width="47" height="27" rx="3" fill="#DCD5C8" stroke="#E2E1DD"/>
-  <text x="84" y="216" font-size="14" fill="#242424">band</text>
-  <text x="84" y="231" font-size="11" fill="#666666">#DCD5C8 · beige-100</text>
-  <rect x="24.5" y="244.5" width="47" height="27" rx="3" fill="#1F1E63" stroke="#E2E1DD"/>
-  <text x="84" y="256" font-size="14" fill="#242424">on-band</text>
-  <text x="84" y="271" font-size="11" fill="#666666">#1F1E63 · navy-800</text>
-  <rect x="24.5" y="284.5" width="47" height="27" rx="3" fill="#77736C" stroke="#E2E1DD"/>
-  <text x="84" y="296" font-size="14" fill="#242424">category</text>
-  <text x="84" y="311" font-size="11" fill="#666666">#77736C · warm-gray-500</text>
-  <rect x="24.5" y="324.5" width="47" height="27" rx="3" fill="#1F1E63" stroke="#E2E1DD"/>
-  <text x="84" y="336" font-size="14" fill="#242424">emphasis</text>
-  <text x="84" y="351" font-size="11" fill="#666666">#1F1E63 · navy-800</text>
-  <rect x="360.5" y="84.5" width="47" height="27" rx="3" fill="#1F1E63" stroke="#E2E1DD"/>
-  <text x="420" y="96" font-size="14" fill="#242424">accent</text>
-  <text x="420" y="111" font-size="11" fill="#666666">#1F1E63 · navy-800</text>
-  <rect x="360.5" y="124.5" width="47" height="27" rx="3" fill="#1F1E63" stroke="#E2E1DD"/>
-  <text x="420" y="136" font-size="14" fill="#242424">section-label</text>
-  <text x="420" y="151" font-size="11" fill="#666666">#1F1E63 · navy-800</text>
-  <rect x="360.5" y="164.5" width="47" height="27" rx="3" fill="#DCD5C8" stroke="#E2E1DD"/>
-  <text x="420" y="176" font-size="14" fill="#242424">rule</text>
-  <text x="420" y="191" font-size="11" fill="#666666">#DCD5C8 · beige-100</text>
-  <rect x="360.5" y="204.5" width="47" height="27" rx="3" fill="#F7F7F6" stroke="#E2E1DD"/>
-  <text x="420" y="216" font-size="14" fill="#242424">placeholder-bg</text>
-  <text x="420" y="231" font-size="11" fill="#666666">#F7F7F6 · warm-gray-50</text>
-  <rect x="360.5" y="244.5" width="47" height="27" rx="3" fill="#E2E1DD" stroke="#E2E1DD"/>
-  <text x="420" y="256" font-size="14" fill="#242424">placeholder-border</text>
-  <text x="420" y="271" font-size="11" fill="#666666">#E2E1DD · warm-gray-100</text>
-  <rect x="360.5" y="284.5" width="47" height="27" rx="3" fill="#777777" stroke="#E2E1DD"/>
-  <text x="420" y="296" font-size="14" fill="#242424">placeholder-text</text>
-  <text x="420" y="311" font-size="11" fill="#666666">#777777 · gray-500</text>
-  <text x="24" y="386" font-size="13" fill="#242424">chart.series (provisional)</text>
-  <rect x="24.5" y="396.5" width="83" height="27" rx="3" fill="#1F1E63" stroke="#E2E1DD"/>
-  <text x="24" y="438" font-size="11" fill="#666666">1. #1F1E63</text>
-  <rect x="120.5" y="396.5" width="83" height="27" rx="3" fill="#77736C" stroke="#E2E1DD"/>
-  <text x="120" y="438" font-size="11" fill="#666666">2. #77736C</text>
-  <rect x="216.5" y="396.5" width="83" height="27" rx="3" fill="#DCD5C8" stroke="#E2E1DD"/>
-  <text x="216" y="438" font-size="11" fill="#666666">3. #DCD5C8</text>
-  <rect x="0.5" y="0.5" width="719" height="467" fill="none" stroke="#E2E1DD"/>
+  <text x="696" y="40" font-size="12" fill="#615B50" font-weight="bold" text-anchor="end" letter-spacing="1">CATEGORY</text>
+  <rect x="24.5" y="84.5" width="47" height="27" rx="3" fill="#FFFFFF" stroke="#DFDCD8"/>
+  <text x="84" y="96" font-size="14" fill="#272623">background</text>
+  <text x="84" y="111" font-size="11" fill="#605E5B">#FFFFFF · white</text>
+  <rect x="24.5" y="124.5" width="47" height="27" rx="3" fill="#272623" stroke="#DFDCD8"/>
+  <text x="84" y="136" font-size="14" fill="#272623">text</text>
+  <text x="84" y="151" font-size="11" fill="#605E5B">#272623 · neutral-15</text>
+  <rect x="24.5" y="164.5" width="47" height="27" rx="3" fill="#605E5B" stroke="#DFDCD8"/>
+  <text x="84" y="176" font-size="14" fill="#272623">text-secondary</text>
+  <text x="84" y="191" font-size="11" fill="#605E5B">#605E5B · neutral-40</text>
+  <rect x="24.5" y="204.5" width="47" height="27" rx="3" fill="#DCD5C8" stroke="#DFDCD8"/>
+  <text x="84" y="216" font-size="14" fill="#272623">band</text>
+  <text x="84" y="231" font-size="11" fill="#605E5B">#DCD5C8 · beige-85</text>
+  <rect x="24.5" y="244.5" width="47" height="27" rx="3" fill="#1F1E63" stroke="#DFDCD8"/>
+  <text x="84" y="256" font-size="14" fill="#272623">on-band</text>
+  <text x="84" y="271" font-size="11" fill="#605E5B">#1F1E63 · navy-16</text>
+  <rect x="24.5" y="284.5" width="47" height="27" rx="3" fill="#615B50" stroke="#DFDCD8"/>
+  <text x="84" y="296" font-size="14" fill="#272623">category</text>
+  <text x="84" y="311" font-size="11" fill="#605E5B">#615B50 · beige-39</text>
+  <rect x="24.5" y="324.5" width="47" height="27" rx="3" fill="#1F1E63" stroke="#DFDCD8"/>
+  <text x="84" y="336" font-size="14" fill="#272623">emphasis</text>
+  <text x="84" y="351" font-size="11" fill="#605E5B">#1F1E63 · navy-16</text>
+  <rect x="360.5" y="84.5" width="47" height="27" rx="3" fill="#A2A2AD" stroke="#DFDCD8"/>
+  <text x="420" y="96" font-size="14" fill="#272623">accent</text>
+  <text x="420" y="111" font-size="11" fill="#605E5B">#A2A2AD · cool-gray-67</text>
+  <rect x="360.5" y="124.5" width="47" height="27" rx="3" fill="#74747E" stroke="#DFDCD8"/>
+  <text x="420" y="136" font-size="14" fill="#272623">section-label</text>
+  <text x="420" y="151" font-size="11" fill="#605E5B">#74747E · cool-gray-49</text>
+  <rect x="360.5" y="164.5" width="47" height="27" rx="3" fill="#DCD5C8" stroke="#DFDCD8"/>
+  <text x="420" y="176" font-size="14" fill="#272623">rule</text>
+  <text x="420" y="191" font-size="11" fill="#605E5B">#DCD5C8 · beige-85</text>
+  <rect x="360.5" y="204.5" width="47" height="27" rx="3" fill="#F8F6F2" stroke="#DFDCD8"/>
+  <text x="420" y="216" font-size="14" fill="#272623">placeholder-bg</text>
+  <text x="420" y="231" font-size="11" fill="#605E5B">#F8F6F2 · neutral-97</text>
+  <rect x="360.5" y="244.5" width="47" height="27" rx="3" fill="#DFDCD8" stroke="#DFDCD8"/>
+  <text x="420" y="256" font-size="14" fill="#272623">placeholder-border</text>
+  <text x="420" y="271" font-size="11" fill="#605E5B">#DFDCD8 · neutral-88</text>
+  <rect x="360.5" y="284.5" width="47" height="27" rx="3" fill="#605E5B" stroke="#DFDCD8"/>
+  <text x="420" y="296" font-size="14" fill="#272623">placeholder-text</text>
+  <text x="420" y="311" font-size="11" fill="#605E5B">#605E5B · neutral-40</text>
+  <text x="24" y="386" font-size="13" fill="#272623">chart.series (provisional)</text>
+  <rect x="24.5" y="396.5" width="83" height="27" rx="3" fill="#1F1E63" stroke="#DFDCD8"/>
+  <text x="24" y="438" font-size="11" fill="#605E5B">1. #1F1E63</text>
+  <rect x="120.5" y="396.5" width="83" height="27" rx="3" fill="#92929D" stroke="#DFDCD8"/>
+  <text x="120" y="438" font-size="11" fill="#605E5B">2. #92929D</text>
+  <rect x="216.5" y="396.5" width="83" height="27" rx="3" fill="#505700" stroke="#DFDCD8"/>
+  <text x="216" y="438" font-size="11" fill="#605E5B">3. #505700</text>
+  <rect x="312.5" y="396.5" width="83" height="27" rx="3" fill="#9A424C" stroke="#DFDCD8"/>
+  <text x="312" y="438" font-size="11" fill="#605E5B">4. #9A424C</text>
+  <rect x="408.5" y="396.5" width="83" height="27" rx="3" fill="#006972" stroke="#DFDCD8"/>
+  <text x="408" y="438" font-size="11" fill="#605E5B">5. #006972</text>
+  <rect x="504.5" y="396.5" width="83" height="27" rx="3" fill="#BC8732" stroke="#DFDCD8"/>
+  <text x="504" y="438" font-size="11" fill="#605E5B">6. #BC8732</text>
+  <rect x="0.5" y="0.5" width="719" height="467" fill="none" stroke="#DFDCD8"/>
 </svg>

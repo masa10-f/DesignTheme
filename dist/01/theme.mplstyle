@@ -3,21 +3,21 @@
 # Colors: roles text / text-secondary / background. Color cycle: chart.series
 # chart.series status: provisional (tentative proposal, needs review)
 
-axes.prop_cycle: cycler('color', ['70372C', 'DC5F36', '666666', 'C4B2AB'])
+axes.prop_cycle: cycler('color', ['70372C', 'DC5F36', '00A56C', '6F8BEE', '005C64', 'B55498'])
 
 figure.facecolor: FFFFFF
 axes.facecolor: FFFFFF
 savefig.facecolor: FFFFFF
 
-text.color: 242424
-axes.labelcolor: 242424
-axes.titlecolor: 242424
-xtick.labelcolor: 242424
-ytick.labelcolor: 242424
+text.color: 292524
+axes.labelcolor: 292524
+axes.titlecolor: 292524
+xtick.labelcolor: 292524
+ytick.labelcolor: 292524
 
-axes.edgecolor: 666666
-xtick.color: 666666
-ytick.color: 666666
+axes.edgecolor: 625D5C
+xtick.color: 625D5C
+ytick.color: 625D5C
 
 # Latin font first, then East Asian; matplotlib >= 3.6 falls back per glyph along this list.
 font.family: Arial, Helvetica, Meiryo UI, Hiragino Sans, Noto Sans JP, sans-serif

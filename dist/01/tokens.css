@@ -3,41 +3,40 @@
 :root {
   /* roles: スタイルではこれを使う */
   --color-background: #FFFFFF;
-  --color-text: #242424;
-  --color-text-secondary: #666666;
+  --color-text: #292524;
+  --color-text-secondary: #625D5C;
   --color-band: #70372C;
   --color-on-band: #F7E3AF;
-  --color-category: #C4B2AB;
+  --color-category: #E9A697;
   --color-emphasis: #70372C;
   --color-accent: #DC5F36;
-  --color-section-label: #DC5F36;
+  --color-section-label: #C84C22;
   --color-rule: #F7E3AF;
-  --color-placeholder-bg: #F7F7F6;
-  --color-placeholder-border: #E2E1DD;
-  --color-placeholder-text: #777777;
+  --color-placeholder-bg: #FBF5F4;
+  --color-placeholder-border: #E1DCDA;
+  --color-placeholder-text: #625D5C;
   /* chart.series (provisional: 暫定案・要確認) */
   --chart-series-1: #70372C;
   --chart-series-2: #DC5F36;
-  --chart-series-3: #666666;
-  --chart-series-4: #C4B2AB;
+  --chart-series-3: #00A56C;
+  --chart-series-4: #6F8BEE;
+  --chart-series-5: #005C64;
+  --chart-series-6: #B55498;
   /* palette: 生の色（直接使わず roles を使う） */
-  --palette-gray-900: #242424;
+  --palette-brown-30: #70372C;
+  --palette-orange-56: #DC5F36;
+  --palette-cream-91: #F7E3AF;
   --palette-white: #FFFFFF;
-  --palette-blue-800: #0E2841;
-  --palette-gray-100: #E8E8E8;
-  --palette-brown-700: #70372C;
-  --palette-orange-400: #DC5F36;
-  --palette-cream-100: #F7E3AF;
-  --palette-beige-100: #DCD5C8;
-  --palette-cool-gray-300: #A2A2AD;
-  --palette-navy-800: #1F1E63;
-  --palette-teal-500: #467886;
-  --palette-plum-500: #96607D;
-  --palette-taupe-300: #C4B2AB;
-  --palette-gray-600: #666666;
-  --palette-warm-gray-50: #F7F7F6;
-  --palette-warm-gray-100: #E2E1DD;
-  --palette-gray-500: #777777;
+  --palette-neutral-15: #292524;
+  --palette-neutral-40: #625D5C;
+  --palette-neutral-88: #E1DCDA;
+  --palette-neutral-97: #FBF5F4;
+  --palette-brown-74: #E9A697;
+  --palette-orange-49: #C84C22;
+  --palette-green-60: #00A56C;
+  --palette-blue-60: #6F8BEE;
+  --palette-teal-35: #005C64;
+  --palette-magenta-50: #B55498;
   /* typography */
   --font-latin: Arial, Helvetica, sans-serif;
   --font-east-asian: "Meiryo UI", "Hiragino Sans", "Noto Sans JP", sans-serif;

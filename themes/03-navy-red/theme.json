@@ -1,0 +1,61 @@
+{
+  "$schema": "../../schema/theme.schema.json",
+  "id": "03",
+  "slug": "navy-red",
+  "name": "Navy & Red",
+  "status": "active",
+  "source": "種色はユーザー指定（2026-11-06）。それ以外は scripts/derive.py で導出",
+  "seeds": { "base": "navy-25", "accent": "red-48", "sub": "yellow-90" },
+  "palette": {
+    "navy-25": { "hex": "#303967", "note": "種色（ベース）。band, emphasis, chart.series[0]" },
+    "red-48": { "hex": "#E60012", "note": "種色（アクセント）。accent, section-label, chart.series[1]" },
+    "yellow-90": { "hex": "#FFE200", "note": "種色（サブ）。on-band, rule" },
+    "white": { "hex": "#FFFFFF", "note": "白（固定）。background" },
+    "neutral-15": { "hex": "#252629", "derived": {"from": "navy-25", "tone": 15, "chroma": 0.006}, "note": "ベースの色相をわずかに混ぜたグレー、明度 15。text" },
+    "neutral-40": { "hex": "#5D5E62", "derived": {"from": "navy-25", "tone": 40, "chroma": 0.006}, "note": "ベースの色相をわずかに混ぜたグレー、明度 40。text-secondary, placeholder-text" },
+    "neutral-88": { "hex": "#DBDDE1", "derived": {"from": "navy-25", "tone": 88, "chroma": 0.006}, "note": "ベースの色相をわずかに混ぜたグレー、明度 88。placeholder-border" },
+    "neutral-97": { "hex": "#F5F6FB", "derived": {"from": "navy-25", "tone": 97, "chroma": 0.006}, "note": "ベースの色相をわずかに混ぜたグレー、明度 97。placeholder-bg" },
+    "navy-68": { "hex": "#96A4DA", "derived": {"from": "navy-25", "tone": 68}, "note": "navy-25 の色相で明度 68（帯の上のカテゴリラベル用）。category" },
+    "green-60": { "hex": "#1DA561", "derived": {"hue": 155, "chroma": 0.15, "tone": 60}, "note": "グラフの系列色として追加（色相 155°・明度 60）。chart.series[2]" },
+    "magenta-60": { "hex": "#C473C9", "derived": {"hue": 325, "chroma": 0.15, "tone": 60}, "note": "グラフの系列色として追加（色相 325°・明度 60）。chart.series[3]" },
+    "teal-45": { "hex": "#007680", "derived": {"hue": 205, "chroma": 0.15, "tone": 45}, "note": "グラフの系列色として追加（色相 205°・明度 45）。chart.series[4]" },
+    "rose-35": { "hex": "#97264C", "derived": {"hue": 5, "chroma": 0.15, "tone": 35}, "note": "グラフの系列色として追加（色相 5°・明度 35）。chart.series[5]" }
+  },
+  "roles": {
+    "background": { "color": "white", "usage": "スライド背景" },
+    "text": { "color": "neutral-15", "usage": "本文" },
+    "text-secondary": { "color": "neutral-40", "usage": "参考文献、図キャプション" },
+    "band": { "color": "navy-25", "usage": "ヘッダー帯・フッター帯の塗り" },
+    "on-band": { "color": "yellow-90", "usage": "帯の上のスライドタイトル、日付・会議名・ページ番号" },
+    "category": { "color": "navy-68", "usage": "帯の右上のカテゴリラベル（BACKGROUND など）" },
+    "emphasis": { "color": "navy-25", "usage": "表紙タイトル、セクションタイトル、キーメッセージ、Takeaway" },
+    "accent": { "color": "red-48", "usage": "表紙のアクセントライン、セクション扉の縦バー" },
+    "section-label": { "color": "red-48", "usage": "セクション扉の「01 / SECTION」" },
+    "rule": { "color": "yellow-90", "usage": "キーメッセージ下の区切り線" },
+    "placeholder-bg": { "color": "neutral-97", "usage": "図プレースホルダーの塗り" },
+    "placeholder-border": { "color": "neutral-88", "usage": "図プレースホルダーの枠線" },
+    "placeholder-text": { "color": "neutral-40", "usage": "図プレースホルダーの文字" }
+  },
+  "typography": {
+    "latin": "Arial",
+    "east_asian": "Meiryo UI",
+    "fallbacks": {
+      "latin": [
+        "Helvetica",
+        "sans-serif"
+      ],
+      "east_asian": [
+        "Hiragino Sans",
+        "Noto Sans JP",
+        "sans-serif"
+      ]
+    }
+  },
+  "chart": { "status": "provisional", "series": ["navy-25", "red-48", "green-60", "magenta-60", "teal-45", "rose-35"] },
+  "notes": [
+    "種色: ベース `navy-25`（#303967）、アクセント `red-48`（#E60012）、サブ `yellow-90`（#FFE200）。それ以外の色は scripts/derive.py が種色から導出した（palette の derived が由来。手順は README「配色の作り方」）。",
+    "chart.series は暫定案（要確認）。種色を先に並べ（白地で 3:1 未満なら明度を下げ、ほかと見分けにくければ外す）、残りは見分けやすさで選んだ追加色（彩度 0.15）。",
+    "サブ `yellow-90`（白地で 3:1 になるよう明度 61 にした色 `yellow-61` #A79400）は `red-48` と見分けにくい（2 型色覚で ΔE00 7.3）ため、系列に入れていない。",
+    "`rule` と `placeholder-border` は装飾として扱い、コントラスト基準の対象外とする。"
+  ]
+}

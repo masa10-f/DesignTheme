@@ -79,7 +79,7 @@ def test_refuses_unmanaged_design_dir_unless_forced(project: Path):
 
 def test_unknown_theme_and_missing_project(project: Path, tmp_path: Path, capsys):
     assert apply.main(["99", str(project)]) == 1
-    assert "使える番号: 01 (brown-orange), 02 (beige-navy)" in capsys.readouterr().err
+    assert "使える番号: 01 (brown-orange), 02 (beige-navy), 03 (navy-red), 04 (slate-teal)" in capsys.readouterr().err
     assert apply.main(["01", str(tmp_path / "nope")]) == 1
 
 

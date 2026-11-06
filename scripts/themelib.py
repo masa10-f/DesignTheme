@@ -1,7 +1,7 @@
-"""build.py / check.py / apply.py が共有する処理（標準ライブラリのみ）。
+"""build.py / check.py / apply.py / derive.py が共有する処理（標準ライブラリのみ）。
 
 - テーマの読み込みと、palette / roles / chart.series の hex への解決
-- WCAG 2.x のコントラスト比
+- WCAG 2.x のコントラスト比（計算は colorlib）と、系列色どうしの色差
 - このリポジトリのスキーマで使う範囲に限った JSON Schema 検証
 """
 
@@ -13,6 +13,9 @@ import re
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Optional
+
+import colorlib as cl
+from colorlib import contrast_ratio, relative_luminance  # noqa: F401（他のスクリプトから tl.* で使う）
 
 ROOT = Path(__file__).resolve().parent.parent
 SCHEMA_RELPATH = Path("schema") / "theme.schema.json"
@@ -27,6 +30,13 @@ LARGE_MIN = 3.0
 GRAPHIC_MIN = 3.0
 THRESHOLDS = {"text": TEXT_MIN, "large-text": LARGE_MIN, "graphic": GRAPHIC_MIN}
 CONTRAST_KINDS = ("text", "large-text", "graphic", "decorative", "surface")
+
+# 系列色どうしの CIEDE2000 色差がこれ未満（一般色覚または色覚シミュレーションのどれか）なら警告する。
+# 線やマーカーのような小さい印では差が見えにくくなるので、余裕を持たせた目安。
+SERIES_MIN_DE = 10.0
+
+SEED_KEYS = ("base", "accent", "sub")
+SEED_JA = {"base": "ベース", "accent": "アクセント", "sub": "サブ"}
 
 GENERIC_FONT_FAMILIES = frozenset(
     {
@@ -116,6 +126,11 @@ class Theme:
     def series_names(self) -> List[str]:
         return list(self.data["chart"]["series"])
 
+    @property
+    def seeds(self) -> Dict[str, str]:
+        """種色の種類（base / accent / sub）→ palette 名。"""
+        return dict(self.data["seeds"])
+
     def palette_hex(self) -> Dict[str, str]:
         return {name: entry["hex"] for name, entry in self.data["palette"].items()}
 
@@ -126,6 +141,19 @@ class Theme:
     def series_hex(self) -> List[str]:
         palette = self.palette_hex()
         return [palette[name] for name in self.series_names]
+
+
+def derived_hex(palette: Dict[str, Dict[str, Any]], derived: Dict[str, Any]) -> str:
+    """palette の derived（由来）から色を計算する。derive.py と check.py で同じ計算を使う。
+
+    from: 種色の palette 名（色相と、chroma がなければ彩度もその色から取る）。hue: OKLCH の色相（chroma 必須）。
+    """
+    if "from" in derived:
+        _, chroma, hue = cl.oklch(palette[derived["from"]]["hex"])
+        chroma = derived.get("chroma", chroma)
+    else:
+        hue, chroma = derived["hue"], derived["chroma"]
+    return cl.at_tone(float(hue), float(chroma), float(derived["tone"]))
 
 
 def theme_dirs(root: Path) -> List[Path]:
@@ -192,23 +220,6 @@ def role_specs_from_schema(schema: Dict[str, Any]) -> Dict[str, RoleSpec]:
 
 
 # --------------------------------------------------------------------------- contrast
-
-
-def _linear(channel: int) -> float:
-    c = channel / 255
-    return c / 12.92 if c <= 0.04045 else ((c + 0.055) / 1.055) ** 2.4
-
-
-def relative_luminance(hex_color: str) -> float:
-    h = hex_color.lstrip("#")
-    r, g, b = (int(h[i : i + 2], 16) for i in (0, 2, 4))
-    return 0.2126 * _linear(r) + 0.7152 * _linear(g) + 0.0722 * _linear(b)
-
-
-def contrast_ratio(a: str, b: str) -> float:
-    la, lb = relative_luminance(a), relative_luminance(b)
-    hi, lo = max(la, lb), min(la, lb)
-    return (hi + 0.05) / (lo + 0.05)
 
 
 def format_ratio(ratio: float) -> str:
@@ -306,6 +317,45 @@ def contrast_results(theme: Theme, specs: Dict[str, RoleSpec]) -> List[ContrastR
     return results
 
 
+@dataclass(frozen=True)
+class SeparationResult:
+    """系列色 i と j の色差（最も見分けにくい見え方で）。"""
+
+    i: int
+    j: int
+    name_i: str
+    name_j: str
+    hex_i: str
+    hex_j: str
+    delta_e: float
+    vision: str
+
+    @property
+    def ack_key(self) -> str:
+        return self.name_j
+
+    @property
+    def is_warning(self) -> bool:
+        return self.delta_e < SERIES_MIN_DE
+
+    def describe(self) -> str:
+        return (
+            f"`chart.series[{self.i}]`（{self.name_i} {self.hex_i}）と `chart.series[{self.j}]`（{self.name_j} {self.hex_j}）"
+            f"の色差 ΔE00 = {self.delta_e:.1f}（{cl.VISION_JA[self.vision]}）。目安 {SERIES_MIN_DE:g} 未満で見分けにくい"
+        )
+
+
+def series_separation(theme: Theme) -> List[SeparationResult]:
+    """chart.series の全ペアについて、一般色覚と 3 種の色覚シミュレーションのうち最小の色差。"""
+    names, hexes = theme.series_names, theme.series_hex()
+    out: List[SeparationResult] = []
+    for i in range(len(names)):
+        for j in range(i + 1, len(names)):
+            value, vision = cl.min_delta_e(hexes[i], hexes[j])
+            out.append(SeparationResult(i, j, names[i], names[j], hexes[i], hexes[j], value, vision))
+    return out
+
+
 # --------------------------------------------------------------------------- fonts
 
 
@@ -349,7 +399,7 @@ _SUPPORTED_KEYWORDS = frozenset(
     {
         "$schema", "$id", "$defs", "$ref", "$comment", "title", "description", "examples", "default",
         "type", "enum", "const", "properties", "required", "additionalProperties", "propertyNames",
-        "minProperties", "pattern", "minLength", "items", "minItems", "uniqueItems",
+        "minProperties", "pattern", "minLength", "items", "minItems", "uniqueItems", "minimum", "maximum",
     }
 )
 
@@ -400,6 +450,12 @@ def _validate(value: Any, schema: Dict[str, Any], root: Dict[str, Any], path: st
         errors.append(f"{path}: {value!r} は {schema['enum']} のいずれかであるべきです")
     if "const" in schema and value != schema["const"]:
         errors.append(f"{path}: {value!r} は {schema['const']!r} であるべきです")
+
+    if isinstance(value, (int, float)) and not isinstance(value, bool):
+        if "minimum" in schema and value < schema["minimum"]:
+            errors.append(f"{path}: {value!r} は {schema['minimum']} 以上であるべきです")
+        if "maximum" in schema and value > schema["maximum"]:
+            errors.append(f"{path}: {value!r} は {schema['maximum']} 以下であるべきです")
 
     if isinstance(value, str):
         if "minLength" in schema and len(value) < schema["minLength"]:

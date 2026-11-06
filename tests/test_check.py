@@ -41,17 +41,18 @@ def test_known_contrast_warnings_are_reported():
     def has(theme_dir: str, *parts: str) -> bool:
         return any(theme_dir in m and all(p in m for p in parts) for m in messages)
 
-    assert has("02-beige-navy", "`category`", "#77736C", "3.23:1", "4.5:1 未満")
-    assert has("01-brown-orange", "`section-label`", "#DC5F36", "3.66:1", "4.5:1 未満")
+    # 種色のまま使う accent だけが基準に届かない（文字用の role は明度を変えた色で基準を満たす）
     assert has("01-brown-orange", "`accent`", "#DC5F36", "3:1 は満たす", "小さい文字には使えない")
+    assert has("02-beige-navy", "`accent`", "#A2A2AD", "2.52:1", "3:1 未満")
+    assert len(messages) == 2
     # すべて notes に記載済み
     assert not any("notes に" in m for m in messages)
 
 
 def test_schema_violation_is_error(repo_copy: Path):
-    edit_theme(repo_copy, "01-brown-orange", lambda d: d["palette"]["brown-700"].update(hex="#70372c"))
+    edit_theme(repo_copy, "01-brown-orange", lambda d: d["palette"]["brown-30"].update(hex="#70372c"))
     found = errors(check.run_checks(repo_copy))
-    assert any("スキーマ違反" in f.message and "palette.brown-700.hex" in f.message for f in found)
+    assert any("スキーマ違反" in f.message and "palette.brown-30.hex" in f.message for f in found)
 
 
 def test_unknown_palette_reference_is_error(repo_copy: Path):
@@ -59,7 +60,7 @@ def test_unknown_palette_reference_is_error(repo_copy: Path):
     edit_theme(repo_copy, "02-beige-navy", lambda d: d["chart"]["series"].append("no-such-color"))
     messages = [f.message for f in errors(check.run_checks(repo_copy))]
     assert any("roles.band.color" in m and "beige-999" in m for m in messages)
-    assert any("chart.series[3]" in m and "no-such-color" in m for m in messages)
+    assert any("chart.series[6]" in m and "no-such-color" in m for m in messages)
 
 
 def test_roles_key_mismatch_is_error(repo_copy: Path):
@@ -77,8 +78,8 @@ def test_duplicate_number_is_error(repo_copy: Path):
 
 
 def test_gap_in_numbers_is_error(repo_copy: Path):
-    (repo_copy / "themes/02-beige-navy").rename(repo_copy / "themes/03-beige-navy")
-    edit_theme(repo_copy, "03-beige-navy", lambda d: d.update(id="03"))
+    (repo_copy / "themes/02-beige-navy").rename(repo_copy / "themes/05-beige-navy")
+    edit_theme(repo_copy, "05-beige-navy", lambda d: d.update(id="05"))
     assert any("欠番" in f.message and "02" in f.message for f in errors(check.run_checks(repo_copy)))
 
 
@@ -90,20 +91,73 @@ def test_directory_name_must_match_id_and_slug(repo_copy: Path):
 
 
 def test_duplicate_pptx_slot_is_error(repo_copy: Path):
-    edit_theme(repo_copy, "01-brown-orange", lambda d: d["palette"]["taupe-300"].update(pptx_slot="accent1"))
+    edit_theme(repo_copy, "01-brown-orange", lambda d: d["palette"]["orange-56"].update(pptx_slot="accent1"))
     assert any("pptx_slot 'accent1'" in f.message for f in errors(check.run_checks(repo_copy)))
 
 
 def test_contrast_warning_must_be_acknowledged_in_notes(repo_copy: Path):
     edit_theme(repo_copy, "02-beige-navy", lambda d: d.update(notes=[]))
     found = warnings(check.run_checks(repo_copy))
-    assert any("notes に `category`" in f.message for f in found)
+    assert any("notes に `accent`" in f.message for f in found)
     assert errors(check.run_checks(repo_copy)) == []  # 警告であってエラーではない
+
+
+# --------------------------------------------------------------------------- 種色と導出した色
+
+
+def test_derived_colors_are_recomputed(repo_copy: Path):
+    # 導出した色を手で変えると、由来（derived）と一致しなくなる
+    edit_theme(repo_copy, "03-navy-red", lambda d: d["palette"]["navy-68"].update(hex="#96A4DB"))
+    found = errors(check.run_checks(repo_copy))
+    assert any("palette.navy-68" in f.message and "derived から計算した値 #96A4DA" in f.message for f in found)
+
+
+def test_hand_tuned_color_without_derived_is_accepted(repo_copy: Path):
+    def tune(d):
+        d["palette"]["navy-68"] = {"hex": "#96A4DB", "note": "手で調整"}
+
+    edit_theme(repo_copy, "03-navy-red", tune)
+    assert errors(check.run_checks(repo_copy)) == []
+
+
+def test_changing_a_seed_invalidates_colors_derived_from_it(repo_copy: Path):
+    edit_theme(repo_copy, "04-slate-teal", lambda d: d["palette"]["slate-30"].update(hex="#5E3448"))
+    messages = [f.message for f in errors(check.run_checks(repo_copy))]
+    assert any("palette.neutral-15" in m for m in messages)
+    assert any("palette.slate-73" in m for m in messages)
+
+
+def test_seed_errors(repo_copy: Path):
+    edit_theme(repo_copy, "01-brown-orange", lambda d: d["seeds"].update(sub="no-such"))
+    edit_theme(repo_copy, "02-beige-navy", lambda d: d["palette"]["navy-16"].update(derived={"from": "beige-85", "tone": 16}))
+    edit_theme(repo_copy, "03-navy-red", lambda d: d["palette"]["navy-68"]["derived"].update(**{"from": "neutral-15"}))
+    edit_theme(repo_copy, "04-slate-teal", lambda d: d["palette"]["red-35"]["derived"].pop("chroma"))
+    messages = [f.where + " " + f.message for f in errors(check.run_checks(repo_copy))]
+    assert any("01-brown-orange" in m and "seeds.sub" in m and "no-such" in m for m in messages)
+    assert any("02-beige-navy" in m and "seeds.sub" in m and "derived を付けられません" in m for m in messages)
+    assert any("03-navy-red" in m and "palette.navy-68.derived.from" in m and "種色" in m for m in messages)
+    assert any("04-slate-teal" in m and "palette.red-35.derived" in m and "chroma" in m for m in messages)
+
+
+def test_derived_range_is_validated_by_schema(repo_copy: Path):
+    edit_theme(repo_copy, "03-navy-red", lambda d: d["palette"]["navy-68"]["derived"].update(tone=101))
+    assert any("スキーマ違反" in f.message and "101" in f.message for f in errors(check.run_checks(repo_copy)))
+
+
+def test_similar_series_colors_are_warned(repo_copy: Path):
+    def add_similar(d):
+        d["palette"]["near-red"] = {"hex": "#E00010"}
+        d["chart"]["series"].append("near-red")
+
+    edit_theme(repo_copy, "03-navy-red", add_similar)
+    found = warnings(check.run_checks(repo_copy))
+    assert any("`chart.series[1]`" in f.message and "`chart.series[6]`" in f.message and "ΔE00" in f.message for f in found)
+    assert any("notes に `near-red` の色差の警告" in f.message for f in found)
 
 
 def test_validator_refuses_unsupported_keywords():
     with pytest.raises(tl.SchemaError):
-        tl.validate_schema(1, {"type": "integer", "maximum": 3})
+        tl.validate_schema(1, {"type": "integer", "exclusiveMaximum": 3})
 
 
 def test_schema_and_themes_agree_with_jsonschema():
@@ -158,10 +212,12 @@ def make_pptx(path: Path, slots: dict, literals: list) -> Path:
 
 
 def test_pptx_matching_template_reports_no_mismatch(tmp_path: Path):
-    pptx = make_pptx(tmp_path / "t.pptx", SLOTS, ["C4B2AB", "77736C"])
+    pptx = make_pptx(tmp_path / "t.pptx", SLOTS, ["DCD5C8", "1F1E63"])
     found = check.compare_pptx(pptx, REPO)
     assert not [f for f in found if f.level in ("error", "warning")]
+    # pptx_slot を持つのは PPTX 由来の 01・02 だけ（03・04 は照合しない）
     assert sum("pptx_slot はすべて一致" in f.message for f in found) == 2
+    assert sum("pptx_slot がないため照合しない" in f.message for f in found) == 2
 
 
 def test_pptx_mismatch_is_reported_without_changing_themes(tmp_path: Path):

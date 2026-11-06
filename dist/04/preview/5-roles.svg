@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 1920 1080" font-family="Arial, Helvetica, &quot;Meiryo UI&quot;, &quot;Hiragino Sans&quot;, &quot;Noto Sans JP&quot;, sans-serif" role="img">
+  <title>04 Slate &amp; Teal — 役割一覧</title>
+  <rect width="1920" height="1080" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1920" height="128" fill="#34485E"/>
+  <text x="128" y="84" font-size="56" fill="#7CC1AB" font-weight="bold">Roles · 04 Slate &amp; Teal</text>
+  <text x="1792" y="76" font-size="28" fill="#9EB6D0" font-weight="bold" text-anchor="end" letter-spacing="3">ROLES</text>
+  <text x="128" y="196" font-size="28" fill="#242629" font-weight="bold">Seeds</text>
+  <rect x="260" y="156" width="64" height="64" fill="#34485E" stroke="#CFCFCF" stroke-width="2" rx="8"/>
+  <text x="340" y="180" font-size="26" fill="#242629" font-weight="bold">Base  slate-30</text>
+  <text x="340" y="212" font-size="24" fill="#5C5F62">#34485E · on white 9.39:1 text OK</text>
+  <rect x="780" y="156" width="64" height="64" fill="#3C7D9B" stroke="#CFCFCF" stroke-width="2" rx="8"/>
+  <text x="860" y="180" font-size="26" fill="#242629" font-weight="bold">Accent  teal-49</text>
+  <text x="860" y="212" font-size="24" fill="#5C5F62">#3C7D9B · on white 4.56:1 text OK</text>
+  <rect x="1300" y="156" width="64" height="64" fill="#5B9F8A" stroke="#CFCFCF" stroke-width="2" rx="8"/>
+  <text x="1380" y="180" font-size="26" fill="#242629" font-weight="bold">Sub  sea-green-61</text>
+  <text x="1380" y="212" font-size="24" fill="#5C5F62">#5B9F8A · on white 3.10:1 lines only</text>
+  <rect x="128" y="268" width="64" height="64" fill="#FFFFFF" stroke="#CFCFCF" stroke-width="2" rx="8"/>
+  <text x="212" y="294" font-size="28" fill="#242629" font-weight="bold" font-family="'Courier New', Courier, monospace">background</text>
+  <text x="212" y="328" font-size="24" fill="#5C5F62">white · #FFFFFF</text>
+  <text x="568" y="296" font-size="26" fill="#242629">surface</text>
+  <rect x="128" y="368" width="64" height="64" fill="#242629" stroke="#CFCFCF" stroke-width="2" rx="8"/>
+  <text x="212" y="394" font-size="28" fill="#242629" font-weight="bold" font-family="'Courier New', Courier, monospace">text</text>
+  <text x="212" y="428" font-size="24" fill="#5C5F62">neutral-15 · #242629</text>
+  <text x="568" y="396" font-size="26" fill="#242629">15.17:1 OK</text>
+  <text x="568" y="428" font-size="24" fill="#5C5F62">vs background</text>
+  <rect x="128" y="468" width="64" height="64" fill="#5C5F62" stroke="#CFCFCF" stroke-width="2" rx="8"/>
+  <text x="212" y="494" font-size="28" fill="#242629" font-weight="bold" font-family="'Courier New', Courier, monospace">text-secondary</text>
+  <text x="212" y="528" font-size="24" fill="#5C5F62">neutral-40 · #5C5F62</text>
+  <text x="568" y="496" font-size="26" fill="#242629">6.42:1 OK</text>
+  <text x="568" y="528" font-size="24" fill="#5C5F62">vs background</text>
+  <rect x="128" y="568" width="64" height="64" fill="#34485E" stroke="#CFCFCF" stroke-width="2" rx="8"/>
+  <text x="212" y="594" font-size="28" fill="#242629" font-weight="bold" font-family="'Courier New', Courier, monospace">band</text>
+  <text x="212" y="628" font-size="24" fill="#5C5F62">slate-30 · #34485E</text>
+  <text x="568" y="596" font-size="26" fill="#242629">surface</text>
+  <rect x="128" y="668" width="64" height="64" fill="#7CC1AB" stroke="#CFCFCF" stroke-width="2" rx="8"/>
+  <text x="212" y="694" font-size="28" fill="#242629" font-weight="bold" font-family="'Courier New', Courier, monospace">on-band</text>
+  <text x="212" y="728" font-size="24" fill="#5C5F62">sea-green-73 · #7CC1AB</text>
+  <text x="568" y="696" font-size="26" fill="#242629">4.50:1 OK</text>
+  <text x="568" y="728" font-size="24" fill="#5C5F62">vs band</text>
+  <rect x="128" y="768" width="64" height="64" fill="#9EB6D0" stroke="#CFCFCF" stroke-width="2" rx="8"/>
+  <text x="212" y="794" font-size="28" fill="#242629" font-weight="bold" font-family="'Courier New', Courier, monospace">category</text>
+  <text x="212" y="828" font-size="24" fill="#5C5F62">slate-73 · #9EB6D0</text>
+  <text x="568" y="796" font-size="26" fill="#242629">4.50:1 OK</text>
+  <text x="568" y="828" font-size="24" fill="#5C5F62">vs band</text>
+  <rect x="128" y="868" width="64" height="64" fill="#34485E" stroke="#CFCFCF" stroke-width="2" rx="8"/>
+  <text x="212" y="894" font-size="28" fill="#242629" font-weight="bold" font-family="'Courier New', Courier, monospace">emphasis</text>
+  <text x="212" y="928" font-size="24" fill="#5C5F62">slate-30 · #34485E</text>
+  <text x="568" y="896" font-size="26" fill="#242629">9.39:1 OK</text>
+  <text x="568" y="928" font-size="24" fill="#5C5F62">vs background</text>
+  <rect x="992" y="268" width="64" height="64" fill="#3C7D9B" stroke="#CFCFCF" stroke-width="2" rx="8"/>
+  <text x="1076" y="294" font-size="28" fill="#242629" font-weight="bold" font-family="'Courier New', Courier, monospace">accent</text>
+  <text x="1076" y="328" font-size="24" fill="#5C5F62">teal-49 · #3C7D9B</text>
+  <text x="1432" y="296" font-size="26" fill="#242629">4.56:1 OK</text>
+  <text x="1432" y="328" font-size="24" fill="#5C5F62">vs background</text>
+  <rect x="992" y="368" width="64" height="64" fill="#3C7D9B" stroke="#CFCFCF" stroke-width="2" rx="8"/>
+  <text x="1076" y="394" font-size="28" fill="#242629" font-weight="bold" font-family="'Courier New', Courier, monospace">section-label</text>
+  <text x="1076" y="428" font-size="24" fill="#5C5F62">teal-49 · #3C7D9B</text>
+  <text x="1432" y="396" font-size="26" fill="#242629">4.56:1 OK</text>
+  <text x="1432" y="428" font-size="24" fill="#5C5F62">vs background</text>
+  <rect x="992" y="468" width="64" height="64" fill="#5B9F8A" stroke="#CFCFCF" stroke-width="2" rx="8"/>
+  <text x="1076" y="494" font-size="28" fill="#242629" font-weight="bold" font-family="'Courier New', Courier, monospace">rule</text>
+  <text x="1076" y="528" font-size="24" fill="#5C5F62">sea-green-61 · #5B9F8A</text>
+  <text x="1432" y="496" font-size="26" fill="#242629">3.10:1 decorative</text>
+  <text x="1432" y="528" font-size="24" fill="#5C5F62">vs background</text>
+  <rect x="992" y="568" width="64" height="64" fill="#F4F7FA" stroke="#CFCFCF" stroke-width="2" rx="8"/>
+  <text x="1076" y="594" font-size="28" fill="#242629" font-weight="bold" font-family="'Courier New', Courier, monospace">placeholder-bg</text>
+  <text x="1076" y="628" font-size="24" fill="#5C5F62">neutral-97 · #F4F7FA</text>
+  <text x="1432" y="596" font-size="26" fill="#242629">surface</text>
+  <rect x="992" y="668" width="64" height="64" fill="#DADDE1" stroke="#CFCFCF" stroke-width="2" rx="8"/>
+  <text x="1076" y="694" font-size="28" fill="#242629" font-weight="bold" font-family="'Courier New', Courier, monospace">placeholder-border</text>
+  <text x="1076" y="728" font-size="24" fill="#5C5F62">neutral-88 · #DADDE1</text>
+  <text x="1432" y="696" font-size="26" fill="#242629">1.26:1 decorative</text>
+  <text x="1432" y="728" font-size="24" fill="#5C5F62">vs placeholder-bg</text>
+  <rect x="992" y="768" width="64" height="64" fill="#5C5F62" stroke="#CFCFCF" stroke-width="2" rx="8"/>
+  <text x="1076" y="794" font-size="28" fill="#242629" font-weight="bold" font-family="'Courier New', Courier, monospace">placeholder-text</text>
+  <text x="1076" y="828" font-size="24" fill="#5C5F62">neutral-40 · #5C5F62</text>
+  <text x="1432" y="796" font-size="26" fill="#242629">5.97:1 OK</text>
+  <text x="1432" y="828" font-size="24" fill="#5C5F62">vs placeholder-bg</text>
+  <rect x="0" y="1000" width="1920" height="80" fill="#34485E"/>
+  <text x="128" y="1050" font-size="28" fill="#7CC1AB">[Date] · Group meeting</text>
+  <text x="1792" y="1050" font-size="28" fill="#7CC1AB" font-weight="bold" text-anchor="end">5</text>
+  <rect x="1" y="1" width="1918" height="1078" fill="none" stroke="#C8C8C8" stroke-width="2"/>
+</svg>

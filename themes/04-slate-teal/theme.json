@@ -1,0 +1,61 @@
+{
+  "$schema": "../../schema/theme.schema.json",
+  "id": "04",
+  "slug": "slate-teal",
+  "name": "Slate & Teal",
+  "status": "active",
+  "source": "種色はユーザー指定（2026-11-06）。それ以外は scripts/derive.py で導出",
+  "seeds": { "base": "slate-30", "accent": "teal-49", "sub": "sea-green-61" },
+  "palette": {
+    "slate-30": { "hex": "#34485E", "note": "種色（ベース）。band, emphasis, chart.series[0]" },
+    "teal-49": { "hex": "#3C7D9B", "note": "種色（アクセント）。accent, section-label, chart.series[1]" },
+    "sea-green-61": { "hex": "#5B9F8A", "note": "種色（サブ）。rule, chart.series[2]" },
+    "white": { "hex": "#FFFFFF", "note": "白（固定）。background" },
+    "neutral-15": { "hex": "#242629", "derived": {"from": "slate-30", "tone": 15, "chroma": 0.006}, "note": "ベースの色相をわずかに混ぜたグレー、明度 15。text" },
+    "neutral-40": { "hex": "#5C5F62", "derived": {"from": "slate-30", "tone": 40, "chroma": 0.006}, "note": "ベースの色相をわずかに混ぜたグレー、明度 40。text-secondary, placeholder-text" },
+    "neutral-88": { "hex": "#DADDE1", "derived": {"from": "slate-30", "tone": 88, "chroma": 0.006}, "note": "ベースの色相をわずかに混ぜたグレー、明度 88。placeholder-border" },
+    "neutral-97": { "hex": "#F4F7FA", "derived": {"from": "slate-30", "tone": 97, "chroma": 0.006}, "note": "ベースの色相をわずかに混ぜたグレー、明度 97。placeholder-bg" },
+    "sea-green-73": { "hex": "#7CC1AB", "derived": {"from": "sea-green-61", "tone": 73}, "note": "sea-green-61 の色相で明度 73（帯の上の文字用）。on-band" },
+    "slate-73": { "hex": "#9EB6D0", "derived": {"from": "slate-30", "tone": 73}, "note": "slate-30 の色相で明度 73（帯の上のカテゴリラベル用）。category" },
+    "orange-55": { "hex": "#B87252", "derived": {"hue": 45, "chroma": 0.1, "tone": 55}, "note": "グラフの系列色として追加（色相 45°・明度 55）。chart.series[3]" },
+    "olive-35": { "hex": "#505700", "derived": {"hue": 115, "chroma": 0.1, "tone": 35}, "note": "グラフの系列色として追加（色相 115°・明度 35）。chart.series[4]" },
+    "red-35": { "hex": "#843B44", "derived": {"hue": 15, "chroma": 0.1, "tone": 35}, "note": "グラフの系列色として追加（色相 15°・明度 35）。chart.series[5]" }
+  },
+  "roles": {
+    "background": { "color": "white", "usage": "スライド背景" },
+    "text": { "color": "neutral-15", "usage": "本文" },
+    "text-secondary": { "color": "neutral-40", "usage": "参考文献、図キャプション" },
+    "band": { "color": "slate-30", "usage": "ヘッダー帯・フッター帯の塗り" },
+    "on-band": { "color": "sea-green-73", "usage": "帯の上のスライドタイトル、日付・会議名・ページ番号" },
+    "category": { "color": "slate-73", "usage": "帯の右上のカテゴリラベル（BACKGROUND など）" },
+    "emphasis": { "color": "slate-30", "usage": "表紙タイトル、セクションタイトル、キーメッセージ、Takeaway" },
+    "accent": { "color": "teal-49", "usage": "表紙のアクセントライン、セクション扉の縦バー" },
+    "section-label": { "color": "teal-49", "usage": "セクション扉の「01 / SECTION」" },
+    "rule": { "color": "sea-green-61", "usage": "キーメッセージ下の区切り線" },
+    "placeholder-bg": { "color": "neutral-97", "usage": "図プレースホルダーの塗り" },
+    "placeholder-border": { "color": "neutral-88", "usage": "図プレースホルダーの枠線" },
+    "placeholder-text": { "color": "neutral-40", "usage": "図プレースホルダーの文字" }
+  },
+  "typography": {
+    "latin": "Arial",
+    "east_asian": "Meiryo UI",
+    "fallbacks": {
+      "latin": [
+        "Helvetica",
+        "sans-serif"
+      ],
+      "east_asian": [
+        "Hiragino Sans",
+        "Noto Sans JP",
+        "sans-serif"
+      ]
+    }
+  },
+  "chart": { "status": "provisional", "series": ["slate-30", "teal-49", "sea-green-61", "orange-55", "olive-35", "red-35"] },
+  "notes": [
+    "種色: ベース `slate-30`（#34485E）、アクセント `teal-49`（#3C7D9B）、サブ `sea-green-61`（#5B9F8A）。それ以外の色は scripts/derive.py が種色から導出した（palette の derived が由来。手順は README「配色の作り方」）。",
+    "`on-band`: サブ `sea-green-61` は `band` に対して 3.03:1 のため、同じ色相で明度 73 の `sea-green-73` を使う。",
+    "chart.series は暫定案（要確認）。種色を先に並べ（白地で 3:1 未満なら明度を下げ、ほかと見分けにくければ外す）、残りは見分けやすさで選んだ追加色（彩度 0.1）。",
+    "`rule` と `placeholder-border` は装飾として扱い、コントラスト基準の対象外とする。"
+  ]
+}

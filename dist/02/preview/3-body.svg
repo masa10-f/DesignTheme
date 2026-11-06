@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 1920 1080" font-family="Arial, Helvetica, &quot;Meiryo UI&quot;, &quot;Hiragino Sans&quot;, &quot;Noto Sans JP&quot;, sans-serif" role="img">
+  <title>02 Beige &amp; Navy — 本文</title>
+  <rect width="1920" height="1080" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1920" height="128" fill="#DCD5C8"/>
+  <text x="128" y="84" font-size="56" fill="#1F1E63" font-weight="bold">Key Result</text>
+  <text x="1792" y="76" font-size="28" fill="#615B50" font-weight="bold" text-anchor="end" letter-spacing="3">BACKGROUND</text>
+  <rect x="520" y="46" width="129" height="36" rx="8" fill="#FFFFFF" stroke="#111111" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="534" y="72" font-size="24" fill="#111111" font-weight="bold" font-family="'Courier New', Courier, monospace">on-band</text>
+  <rect x="900" y="46" width="86" height="36" rx="8" fill="#FFFFFF" stroke="#111111" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="914" y="72" font-size="24" fill="#111111" font-weight="bold" font-family="'Courier New', Courier, monospace">band</text>
+  <rect x="1160" y="46" width="144" height="36" rx="8" fill="#FFFFFF" stroke="#111111" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="1174" y="72" font-size="24" fill="#111111" font-weight="bold" font-family="'Courier New', Courier, monospace">category</text>
+  <rect x="128" y="168" width="144" height="36" rx="8" fill="#FFFFFF" stroke="#111111" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="142" y="194" font-size="24" fill="#111111" font-weight="bold" font-family="'Courier New', Courier, monospace">emphasis</text>
+  <text x="128" y="258" font-size="52" fill="#1F1E63" font-weight="bold">Lightness sets the role.</text>
+  <rect x="128" y="292" width="640" height="6" fill="#DCD5C8"/>
+  <rect x="790" y="278" width="86" height="36" rx="8" fill="#FFFFFF" stroke="#111111" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="804" y="304" font-size="24" fill="#111111" font-weight="bold" font-family="'Courier New', Courier, monospace">rule</text>
+  <rect x="128" y="350" width="86" height="36" rx="8" fill="#FFFFFF" stroke="#111111" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="142" y="376" font-size="24" fill="#111111" font-weight="bold" font-family="'Courier New', Courier, monospace">text</text>
+  <text x="128" y="442" font-size="32" fill="#272623">•</text>
+  <text x="164" y="442" font-size="32" fill="#272623">Hue and chroma come from the seed colors.</text>
+  <text x="128" y="494" font-size="32" fill="#272623">•</text>
+  <text x="164" y="494" font-size="32" fill="#272623">Text roles get the tone they need for 4.5:1.</text>
+  <text x="128" y="546" font-size="32" fill="#272623">•</text>
+  <text x="164" y="546" font-size="32" fill="#272623">Chart colors are checked for color vision.</text>
+  <rect x="128" y="790" width="230" height="36" rx="8" fill="#FFFFFF" stroke="#111111" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="142" y="816" font-size="24" fill="#111111" font-weight="bold" font-family="'Courier New', Courier, monospace">text-secondary</text>
+  <text x="128" y="866" font-size="26" fill="#605E5B">[1] WCAG 2.2, 1.4.3 and 1.4.11</text>
+  <text x="128" y="906" font-size="26" fill="#605E5B">[2] B. Ottosson, A perceptual color space (OKLab)</text>
+  <rect x="1180" y="214" width="612" height="520" fill="#F8F6F2" stroke="#DFDCD8" stroke-width="3"/>
+  <text x="1486" y="482" font-size="32" fill="#605E5B" text-anchor="middle">Figure placeholder</text>
+  <rect x="1204" y="236" width="230" height="36" rx="8" fill="#FFFFFF" stroke="#111111" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="1218" y="262" font-size="24" fill="#111111" font-weight="bold" font-family="'Courier New', Courier, monospace">placeholder-bg</text>
+  <rect x="1352" y="504" width="259" height="36" rx="8" fill="#FFFFFF" stroke="#111111" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="1366" y="530" font-size="24" fill="#111111" font-weight="bold" font-family="'Courier New', Courier, monospace">placeholder-text</text>
+  <rect x="1180" y="752" width="288" height="36" rx="8" fill="#FFFFFF" stroke="#111111" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="1194" y="778" font-size="24" fill="#111111" font-weight="bold" font-family="'Courier New', Courier, monospace">placeholder-border</text>
+  <rect x="0" y="1000" width="1920" height="80" fill="#DCD5C8"/>
+  <text x="128" y="1050" font-size="28" fill="#1F1E63">[Date] · Group meeting</text>
+  <text x="1792" y="1050" font-size="28" fill="#1F1E63" font-weight="bold" text-anchor="end">3</text>
+  <rect x="1" y="1" width="1918" height="1078" fill="none" stroke="#C8C8C8" stroke-width="2"/>
+</svg>

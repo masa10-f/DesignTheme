@@ -24,6 +24,7 @@ FILES = [
     "theme-colors.sty",
     "claude-design-system/tokens.json",
     "swatches.svg",
+    *[f"preview/{name}.svg" for name, _ in build.PREVIEWS],
 ]
 
 
@@ -64,12 +65,12 @@ def test_build_refuses_invalid_themes(repo_copy: Path):
 
 
 def test_change_in_theme_json_propagates(repo_copy: Path):
-    edit_theme(repo_copy, "02-beige-navy", lambda d: d["roles"]["emphasis"].update(color="gray-900"))
+    edit_theme(repo_copy, "02-beige-navy", lambda d: d["roles"]["emphasis"].update(color="neutral-15"))
     assert build.main(["--root", str(repo_copy), "--check"]) == 1
     assert build.main(["--root", str(repo_copy)]) == 0
     tokens = json.loads((repo_copy / "dist/02/tokens.json").read_text(encoding="utf-8"))
-    assert tokens["roles"]["emphasis"] == "#242424"
-    assert "--color-emphasis: #242424;" in (repo_copy / "dist/02/tokens.css").read_text(encoding="utf-8")
+    assert tokens["roles"]["emphasis"] == "#272623"
+    assert "--color-emphasis: #272623;" in (repo_copy / "dist/02/tokens.css").read_text(encoding="utf-8")
 
 
 @pytest.mark.parametrize("theme", THEMES, ids=lambda t: t.id)
@@ -195,6 +196,49 @@ def test_readme_lists_themes_with_swatches_roles_and_warnings():
         assert f"dist/{theme.id}/swatches.svg" in section
         for role in theme.roles:
             assert f"| `{role}` |" in section
+        for key in tl.SEED_KEYS:
+            assert f"| {tl.SEED_JA[key]} | `{theme.seeds[key]}` |" in section
     assert "暫定案・要確認" in section
-    assert "`category`（warm-gray-500 #77736C）on `band`（#DCD5C8）= 3.23:1" in section
-    assert "`section-label`（orange-400 #DC5F36）on `background`（#FFFFFF）= 3.66:1" in section
+    assert "`accent`（orange-56 #DC5F36）on `background`（#FFFFFF）= 3.66:1" in section
+    assert "`accent`（cool-gray-67 #A2A2AD）on `background`（#FFFFFF）= 2.52:1" in section
+    assert "| `section-label` | `orange-49` | `#C84C22` | `orange-56` の色相・明度 49 |" in section
+    assert "系列色どうしの最小の色差" in section
+
+
+@pytest.mark.parametrize("theme", THEMES, ids=lambda t: t.id)
+def test_preview_slides_label_every_role(theme: tl.Theme):
+    labelled = set()
+    for name, _ in build.PREVIEWS:
+        path = REPO / "dist" / theme.id / "preview" / f"{name}.svg"
+        root = ET.parse(path).getroot()
+        assert root.get("viewBox") == "0 0 1920 1080"
+        text = path.read_text(encoding="utf-8")
+        labelled |= {r for r in theme.roles if f">{r}</text>" in text}
+        # 描画する文字は英語だけ（和文フォントのない環境でも崩れない）。<title> は表示されない
+        drawn = re.sub(r"<title>.*?</title>", "", text)
+        assert not re.search(r"[\u3000-\u9fff\uff00-\uffef]", drawn), name
+    assert labelled == set(theme.roles)
+    roles_slide = (REPO / "dist" / theme.id / "preview/5-roles.svg").read_text(encoding="utf-8")
+    for role, hex_ in theme.role_hex().items():
+        assert f'fill="{hex_}"' in roles_slide
+    for hex_ in theme.series_hex():
+        assert f'stroke="{hex_}"' in (REPO / "dist" / theme.id / "preview/4-chart.svg").read_text(encoding="utf-8")
+
+
+@pytest.mark.parametrize("theme", THEMES, ids=lambda t: t.id)
+def test_theme_readme_shows_previews(theme: tl.Theme):
+    readme = (theme.dir / "README.md").read_text(encoding="utf-8")
+    section = readme[readme.index(build.PREVIEW_BEGIN) : readme.index(build.PREVIEW_END)]
+    for name, _ in build.PREVIEWS:
+        assert f"](../../dist/{theme.id}/preview/{name}.svg)" in section
+    main = (REPO / "README.md").read_text(encoding="utf-8")
+    assert f'<img src="dist/{theme.id}/preview/3-body.svg"' in main
+
+
+def test_build_requires_preview_markers_in_theme_readme(repo_copy: Path, capsys):
+    readme = repo_copy / "themes/03-navy-red/README.md"
+    readme.write_text("# 03\n", encoding="utf-8")
+    assert build.main(["--root", str(repo_copy)]) == 1
+    assert "themes/03-navy-red/README.md" in capsys.readouterr().err
+    readme.unlink()
+    assert build.main(["--root", str(repo_copy)]) == 1

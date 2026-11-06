@@ -33,9 +33,11 @@ def edit_theme(root: Path, dirname: str, change: Callable[[dict], None]) -> Path
 
 
 def snapshot(root: Path) -> dict:
-    """root 以下の dist/ と README.md の内容。"""
+    """root 以下の dist/、README.md、各テーマの README.md の内容（build.py が書くもの）。"""
     import themelib
 
     files = {p.relative_to(root).as_posix(): p.read_bytes() for p in themelib.list_files(root / "dist")}
     files["README.md"] = (root / "README.md").read_bytes()
+    for readme in sorted((root / "themes").glob("*/README.md")):
+        files[readme.relative_to(root).as_posix()] = readme.read_bytes()
     return files

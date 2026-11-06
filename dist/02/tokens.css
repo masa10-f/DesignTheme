@@ -3,40 +3,41 @@
 :root {
   /* roles: スタイルではこれを使う */
   --color-background: #FFFFFF;
-  --color-text: #242424;
-  --color-text-secondary: #666666;
+  --color-text: #272623;
+  --color-text-secondary: #605E5B;
   --color-band: #DCD5C8;
   --color-on-band: #1F1E63;
-  --color-category: #77736C;
+  --color-category: #615B50;
   --color-emphasis: #1F1E63;
-  --color-accent: #1F1E63;
-  --color-section-label: #1F1E63;
+  --color-accent: #A2A2AD;
+  --color-section-label: #74747E;
   --color-rule: #DCD5C8;
-  --color-placeholder-bg: #F7F7F6;
-  --color-placeholder-border: #E2E1DD;
-  --color-placeholder-text: #777777;
+  --color-placeholder-bg: #F8F6F2;
+  --color-placeholder-border: #DFDCD8;
+  --color-placeholder-text: #605E5B;
   /* chart.series (provisional: 暫定案・要確認) */
   --chart-series-1: #1F1E63;
-  --chart-series-2: #77736C;
-  --chart-series-3: #DCD5C8;
+  --chart-series-2: #92929D;
+  --chart-series-3: #505700;
+  --chart-series-4: #9A424C;
+  --chart-series-5: #006972;
+  --chart-series-6: #BC8732;
   /* palette: 生の色（直接使わず roles を使う） */
-  --palette-gray-900: #242424;
+  --palette-beige-85: #DCD5C8;
+  --palette-cool-gray-67: #A2A2AD;
+  --palette-navy-16: #1F1E63;
   --palette-white: #FFFFFF;
-  --palette-blue-800: #0E2841;
-  --palette-gray-100: #E8E8E8;
-  --palette-brown-700: #70372C;
-  --palette-orange-400: #DC5F36;
-  --palette-cream-100: #F7E3AF;
-  --palette-beige-100: #DCD5C8;
-  --palette-cool-gray-300: #A2A2AD;
-  --palette-navy-800: #1F1E63;
-  --palette-teal-500: #467886;
-  --palette-plum-500: #96607D;
-  --palette-warm-gray-500: #77736C;
-  --palette-gray-600: #666666;
-  --palette-warm-gray-50: #F7F7F6;
-  --palette-warm-gray-100: #E2E1DD;
-  --palette-gray-500: #777777;
+  --palette-neutral-15: #272623;
+  --palette-neutral-40: #605E5B;
+  --palette-neutral-88: #DFDCD8;
+  --palette-neutral-97: #F8F6F2;
+  --palette-beige-39: #615B50;
+  --palette-cool-gray-49: #74747E;
+  --palette-cool-gray-61: #92929D;
+  --palette-olive-35: #505700;
+  --palette-red-40: #9A424C;
+  --palette-teal-40: #006972;
+  --palette-ochre-60: #BC8732;
   /* typography */
   --font-latin: Arial, Helvetica, sans-serif;
   --font-east-asian: "Meiryo UI", "Hiragino Sans", "Noto Sans JP", sans-serif;

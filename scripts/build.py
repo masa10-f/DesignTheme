@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""themes/*/theme.json から dist/<番号>/ と README.md のテーマ一覧を生成する。
+"""themes/*/theme.json から dist/<番号>/、README.md のテーマ一覧、各テーマ README のプレビュー区間を生成する。
 
 使い方:
   python scripts/build.py           # 生成して書き込む（dist/ 内の不要なファイルは削除）
@@ -21,6 +21,7 @@ from xml.sax.saxutils import escape as xml_escape
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import check  # noqa: E402
+import colorlib as cl  # noqa: E402
 import themelib as tl  # noqa: E402
 
 # theme-colors.sty の \ProvidesPackage に書く日付。LaTeX は版情報の先頭を日付として読むので必須。
@@ -29,6 +30,9 @@ STY_FORMAT_DATE = "2026/11/06"
 
 README_BEGIN = "<!-- BEGIN GENERATED: themes -->"
 README_END = "<!-- END GENERATED: themes -->"
+# 各テーマの README.md のプレビュー区間
+PREVIEW_BEGIN = "<!-- BEGIN GENERATED: preview -->"
+PREVIEW_END = "<!-- END GENERATED: preview -->"
 TOKEN_NAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.-]*$")
 
 CHART_STATUS_JA = {"provisional": "暫定案・要確認", "confirmed": "確定"}
@@ -288,6 +292,240 @@ def render_svg(theme: tl.Theme) -> str:
     return "\n".join(out) + "\n"
 
 
+# --------------------------------------------------------------------------- 見本スライド（preview/*.svg）
+
+SLIDE_W, SLIDE_H = 1920, 1080
+TAG_FONT = "'Courier New', Courier, monospace"
+PREVIEWS = (
+    ("1-title", "表紙"),
+    ("2-section", "セクション扉"),
+    ("3-body", "本文"),
+    ("4-chart", "グラフ"),
+    ("5-roles", "役割一覧"),
+)
+
+
+class _Slide:
+    """1920×1080 の SVG を組み立てる（座標は px、文字の y はベースライン）。"""
+
+    def __init__(self, theme: tl.Theme, title: str) -> None:
+        self.theme = theme
+        self.title = title
+        self.parts: List[str] = []
+        self.tags: List[str] = []  # ラベルを付けた名前（README の説明用）
+
+    def rect(self, x: float, y: float, w: float, h: float, fill: str, stroke: str = "", width: float = 0, rx: float = 0) -> None:
+        extra = f' stroke="{stroke}" stroke-width="{width:g}"' if stroke else ""
+        extra += f' rx="{rx:g}"' if rx else ""
+        self.parts.append(f'  <rect x="{x:g}" y="{y:g}" width="{w:g}" height="{h:g}" fill="{fill}"{extra}/>')
+
+    def text(
+        self, x: float, y: float, body: str, size: int, fill: str, bold: bool = False, anchor: str = "start",
+        family: str = "", spacing: float = 0,
+    ) -> None:
+        attrs = f' font-weight="bold"' if bold else ""
+        attrs += f' text-anchor="{anchor}"' if anchor != "start" else ""
+        attrs += f' font-family="{xml_escape(family, {chr(34): "&quot;"})}"' if family else ""
+        attrs += f' letter-spacing="{spacing:g}"' if spacing else ""
+        self.parts.append(f'  <text x="{x:g}" y="{y:g}" font-size="{size}" fill="{fill}"{attrs}>{xml_escape(body)}</text>')
+
+    def tag(self, name: str, x: float, y: float) -> None:
+        """その部分に使っている role 名のラベル（点線の枠）。"""
+        w = math.ceil(len(name) * 14.4) + 28
+        self.parts.append(
+            f'  <rect x="{x:g}" y="{y:g}" width="{w}" height="36" rx="8" fill="#FFFFFF" stroke="#111111" '
+            f'stroke-width="2" stroke-dasharray="6 4"/>'
+        )
+        self.text(x + 14, y + 26, name, 24, "#111111", bold=True, family=TAG_FONT)
+        if name not in self.tags:
+            self.tags.append(name)
+
+    def render(self) -> str:
+        font = xml_escape(tl.css_font_family(tl.font_stack(self.theme.typography)), {'"': "&quot;"})
+        head = [
+            f'<svg xmlns="http://www.w3.org/2000/svg" width="{SLIDE_W // 2}" height="{SLIDE_H // 2}" '
+            f'viewBox="0 0 {SLIDE_W} {SLIDE_H}" font-family="{font}" role="img">',
+            f"  <title>{xml_escape(self.theme.label)} — {xml_escape(self.title)}</title>",
+        ]
+        background = f'  <rect width="{SLIDE_W}" height="{SLIDE_H}" fill="{self.theme.role_hex()["background"]}"/>'
+        frame = f'  <rect x="1" y="1" width="{SLIDE_W - 2}" height="{SLIDE_H - 2}" fill="none" stroke="#C8C8C8" stroke-width="2"/>'
+        return "\n".join(head + [background] + self.parts + [frame, "</svg>"]) + "\n"
+
+
+def _slide_header(s: _Slide, c: Dict[str, str], title: str, category: str) -> None:
+    s.rect(0, 0, SLIDE_W, 128, c["band"])
+    s.text(128, 84, title, 56, c["on-band"], bold=True)
+    s.text(1792, 76, category, 28, c["category"], bold=True, anchor="end", spacing=3)
+
+
+def _slide_footer(s: _Slide, c: Dict[str, str], page: int) -> None:
+    s.rect(0, 1000, SLIDE_W, 80, c["band"])
+    s.text(128, 1050, "[Date] · Group meeting", 28, c["on-band"])
+    s.text(1792, 1050, str(page), 28, c["on-band"], bold=True, anchor="end")
+
+
+# 見本スライドの文字は英語にする（SVG を表示する環境に和文フォントがなくても崩れないように）
+SEED_EN = {"base": "Base", "accent": "Accent", "sub": "Sub"}
+VISION_EN = {"normal": "normal vision", "protan": "protan", "deutan": "deutan", "tritan": "tritan"}
+
+
+def _status(result: Optional[tl.ContrastResult]) -> str:
+    if result is None:
+        return "surface"
+    ratio = tl.format_ratio(result.ratio)
+    return {
+        "decorative": f"{ratio} decorative",
+        "fail": f"{ratio} below threshold",
+        "graphic-only": f"{ratio} lines only",
+    }.get(result.status, f"{ratio} OK")
+
+
+def render_previews(theme: tl.Theme, specs: Dict[str, tl.RoleSpec]) -> Dict[str, _Slide]:
+    """見本スライド 5 枚（PREVIEWS の名前 → スライド）。各部分に role 名のラベルを付ける。"""
+    c = theme.role_hex()
+    out: Dict[str, _Slide] = {}
+
+    s = _Slide(theme, "表紙")
+    s.rect(0, 0, SLIDE_W, 112, c["band"])
+    s.text(128, 68, "Weekly Research Meeting", 36, c["on-band"], bold=True)
+    s.text(1792, 66, f"THEME {theme.id}", 28, c["category"], bold=True, anchor="end", spacing=3)
+    s.tag("on-band", 600, 38), s.tag("band", 920, 38), s.tag("category", 1350, 38)
+    s.tag("emphasis", 128, 262)
+    s.text(128, 398, "Seed-based Color Themes", 96, c["emphasis"], bold=True)
+    s.text(128, 504, "for Research Slides", 96, c["emphasis"], bold=True)
+    s.rect(128, 560, 420, 12, c["accent"])
+    s.tag("accent", 576, 548)
+    s.text(128, 656, "[Author Name] · [Affiliation]", 40, c["text"])
+    s.tag("text", 820, 626)
+    s.text(128, 718, f"Demo deck — theme {theme.label}", 30, c["text-secondary"])
+    s.tag("text-secondary", 820, 692)
+    _slide_footer(s, c, 1)
+    out["1-title"] = s
+
+    s = _Slide(theme, "セクション扉")
+    s.rect(128, 330, 18, 380, c["accent"])
+    s.tag("accent", 128, 730)
+    s.text(200, 382, "01 / SECTION", 40, c["section-label"], bold=True, spacing=4)
+    s.tag("section-label", 640, 352)
+    s.text(200, 520, "Method", 120, c["emphasis"], bold=True)
+    s.tag("emphasis", 680, 456)
+    s.text(200, 610, "How the palette is derived from three seed colors", 34, c["text-secondary"])
+    s.tag("text-secondary", 200, 644)
+    _slide_footer(s, c, 2)
+    out["2-section"] = s
+
+    s = _Slide(theme, "本文")
+    _slide_header(s, c, "Key Result", "BACKGROUND")
+    s.tag("on-band", 520, 46), s.tag("band", 900, 46), s.tag("category", 1160, 46)
+    s.tag("emphasis", 128, 168)
+    s.text(128, 258, "Lightness sets the role.", 52, c["emphasis"], bold=True)
+    s.rect(128, 292, 640, 6, c["rule"])
+    s.tag("rule", 790, 278)
+    s.tag("text", 128, 350)
+    for i, line in enumerate(
+        ["Hue and chroma come from the seed colors.", "Text roles get the tone they need for 4.5:1.", "Chart colors are checked for color vision."]
+    ):
+        s.text(128, 442 + i * 52, "•", 32, c["text"])
+        s.text(164, 442 + i * 52, line, 32, c["text"])
+    s.tag("text-secondary", 128, 790)
+    s.text(128, 866, "[1] WCAG 2.2, 1.4.3 and 1.4.11", 26, c["text-secondary"])
+    s.text(128, 906, "[2] B. Ottosson, A perceptual color space (OKLab)", 26, c["text-secondary"])
+    s.rect(1180, 214, 612, 520, c["placeholder-bg"], c["placeholder-border"], 3)
+    s.text(1486, 482, "Figure placeholder", 32, c["placeholder-text"], anchor="middle")
+    s.tag("placeholder-bg", 1204, 236), s.tag("placeholder-text", 1352, 504), s.tag("placeholder-border", 1180, 752)
+    _slide_footer(s, c, 3)
+    out["3-body"] = s
+
+    s = _Slide(theme, "グラフ")
+    _slide_header(s, c, "Results", "RESULTS")
+    series = list(zip(theme.series_names, theme.series_hex()))
+    axis = c["text-secondary"]
+    s.parts.append(f'  <line x1="168" y1="210" x2="168" y2="690" stroke="{axis}" stroke-width="3"/>')
+    s.parts.append(f'  <line x1="168" y1="690" x2="1118" y2="690" stroke="{axis}" stroke-width="3"/>')
+    for i, (_, hex_) in enumerate(series):
+        pts = [(188 + k * 92, 620 - i * 52 - 60 * math.sin(k * 0.8 + i * 1.1)) for k in range(10)]
+        s.parts.append(
+            f'  <polyline points="{" ".join(f"{x:.0f},{y:.0f}" for x, y in pts)}" fill="none" stroke="{hex_}" '
+            f'stroke-width="6" stroke-linejoin="round"/>'
+        )
+        s.parts += [f'  <circle cx="{x:.0f}" cy="{y:.0f}" r="9" fill="{hex_}"/>' for x, y in pts[::3]]
+    for i, (_, hex_) in enumerate(series):
+        h = (380, 300, 340, 250, 290, 210)[i % 6]
+        s.rect(1282 + i * 84, 690 - h, 64, h, hex_)
+    s.parts.append(f'  <line x1="1262" y1="690" x2="1782" y2="690" stroke="{axis}" stroke-width="3"/>')
+    s.text(128, 186, "Score", 26, c["text"], bold=True)
+    s.tag("text", 240, 158)
+    s.text(1118, 730, "Epoch", 26, c["text"], bold=True, anchor="end")
+    s.tag("text-secondary", 600, 702)
+    s.tag("chart.series", 128, 738)
+    for i, (name, hex_) in enumerate(series):
+        x = 128 + i * 276
+        s.rect(x, 790, 40, 40, hex_, rx=6)
+        s.text(x + 52, 810, f"{i + 1}  {name}", 26, c["text"], bold=True)
+        s.text(x + 52, 842, hex_, 24, c["text-secondary"])
+    separations = tl.series_separation(theme)
+    if separations:
+        worst = min(separations, key=lambda r: r.delta_e)
+        s.text(
+            128, 906,
+            f"chart.series ({theme.chart_status}) — smallest difference ΔE00 {worst.delta_e:.1f}"
+            f" ({VISION_EN[worst.vision]}, {worst.i + 1} vs {worst.j + 1})",
+            26, c["text-secondary"],
+        )
+    _slide_footer(s, c, 4)
+    out["4-chart"] = s
+
+    s = _Slide(theme, "役割一覧")
+    _slide_header(s, c, f"Roles · {theme.label}", "ROLES")
+    palette = theme.palette_hex()
+    s.text(128, 196, "Seeds", 28, c["text"], bold=True)
+    for i, key in enumerate(tl.SEED_KEYS):
+        name = theme.seeds[key]
+        hex_ = palette[name]
+        ratio = cl.contrast_ratio(hex_, c["background"])
+        verdict = "text OK" if ratio >= tl.TEXT_MIN else ("lines only" if ratio >= tl.GRAPHIC_MIN else "not on white")
+        x = 260 + i * 520
+        s.rect(x, 156, 64, 64, hex_, "#CFCFCF", 2, 8)
+        s.text(x + 80, 180, f"{SEED_EN[key]}  {name}", 26, c["text"], bold=True)
+        s.text(x + 80, 212, f"{hex_} · on white {tl.format_ratio(ratio)} {verdict}", 24, c["text-secondary"])
+    results = {r.subject: r for r in tl.contrast_results(theme, specs)}
+    for idx, role in enumerate(theme.roles):
+        col, row = divmod(idx, 7)
+        x, y = 128 + col * 864, 268 + row * 100
+        name = theme.roles[role]["color"]
+        s.rect(x, y, 64, 64, c[role], "#CFCFCF", 2, 8)
+        s.text(x + 84, y + 26, role, 28, c["text"], bold=True, family=TAG_FONT)
+        s.text(x + 84, y + 60, f"{name} · {palette[name]}", 24, c["text-secondary"])
+        s.text(x + 440, y + 28, _status(results.get(role)), 26, c["text"])
+        if role in results:
+            s.text(x + 440, y + 60, f"vs {results[role].against}", 24, c["text-secondary"])
+    _slide_footer(s, c, 5)
+    out["5-roles"] = s
+    return out
+
+
+def render_theme_preview_section(theme: tl.Theme, slides: Dict[str, _Slide]) -> str:
+    """テーマの README.md に入れるプレビュー区間。"""
+    d = f"../../{tl.DIST_DIRNAME}/{theme.id}/preview"
+    lines = [
+        PREVIEW_BEGIN,
+        "<!-- この区間は scripts/build.py が生成する。手で編集しないこと。 -->",
+        "",
+        f"見本スライド 5 枚。点線の枠は、その部分に使っている role の名前。色は [theme.json](theme.json) の値そのまま"
+        f"（画像は [dist/{theme.id}/preview/]({d}/)）。",
+    ]
+    for name, title in PREVIEWS:
+        lines += [
+            "",
+            f"**{title}** — "
+            + ("・".join(f"`{r}`" for r in slides[name].tags) or "種色 3 つと全 role の色・palette 名・コントラスト比"),
+            "",
+            f"![{md(theme.label)}: {title}]({d}/{name}.svg)",
+        ]
+    lines += ["", PREVIEW_END]
+    return "\n".join(lines)
+
+
 # --------------------------------------------------------------------------- README
 
 
@@ -306,29 +544,81 @@ def _contrast_cell(result: Optional[tl.ContrastResult]) -> str:
     return f"{ratio} {vs} ✓"
 
 
+def _origin(theme: tl.Theme, name: str) -> str:
+    """palette の色がどこから来たか（README 用）。"""
+    entry = theme.data["palette"][name]
+    for key, seed_name in theme.seeds.items():
+        if seed_name == name:
+            return f"種色（{tl.SEED_JA[key]}）"
+    derived = entry.get("derived")
+    if derived is None:
+        return "固定"
+    if "from" in derived:
+        chroma = f"・彩度 {derived['chroma']:g}" if "chroma" in derived else ""
+        return f"`{derived['from']}` の色相{chroma}・明度 {derived['tone']}"
+    return f"追加色（色相 {derived['hue']:g}°・彩度 {derived['chroma']:g}・明度 {derived['tone']}）"
+
+
+def _seed_ratio(ratio: float) -> str:
+    if ratio >= tl.TEXT_MIN:
+        verdict = "文字 ✓"
+    elif ratio >= tl.GRAPHIC_MIN:
+        verdict = "線・図形 ✓ / 文字 ✗"
+    else:
+        verdict = "⚠ 文字・線とも ✗"
+    return f"{tl.format_ratio(ratio)}（{verdict}）"
+
+
+def _seed_rows(theme: tl.Theme) -> List[str]:
+    palette = theme.palette_hex()
+    band = theme.role_hex()["band"]
+    uses: Dict[str, List[str]] = {}
+    for role, spec in theme.roles.items():
+        uses.setdefault(spec["color"], []).append(f"`{role}`")
+    for i, n in enumerate(theme.series_names):
+        uses.setdefault(n, []).append(f"系列 {i + 1}")
+    rows = [
+        "| 種色 | palette | hex | 明度 L* | 白地（`background`） | 帯（`band`）の上 | そのまま使う場所 |",
+        "|---|---|---|---|---|---|---|",
+    ]
+    for key in tl.SEED_KEYS:
+        n = theme.seeds[key]
+        h = palette[n]
+        on_band = "—" if theme.roles["band"]["color"] == n else _seed_ratio(cl.contrast_ratio(h, band))
+        rows.append(
+            f"| {tl.SEED_JA[key]} | `{n}` | `{h}` | {cl.tone(h):.1f} | {_seed_ratio(cl.contrast_ratio(h, '#FFFFFF'))} "
+            f"| {on_band} | {'、'.join(uses.get(n, [])) or '—'} |"
+        )
+    return rows
+
+
 def render_readme_section(themes: List[tl.Theme], specs: Dict[str, tl.RoleSpec], root: Path) -> str:
     lines = [
         README_BEGIN,
         "<!-- この区間は scripts/build.py が themes/*/theme.json から生成する。手で編集しないこと。 -->",
         "",
-        "| 番号 | 名前 | slug | 状態 | band / emphasis / accent |",
+        "| 番号 | 名前 | slug | 状態 | 種色（ベース / アクセント / サブ） |",
         "|---|---|---|---|---|",
     ]
     for t in themes:
-        h = t.role_hex()
-        lines.append(
-            f"| `{t.id}` | {md(t.name)} | `{t.slug}` | {t.status} | `{h['band']}` / `{h['emphasis']}` / `{h['accent']}` |"
-        )
+        p = t.palette_hex()
+        seeds = " / ".join(f"`{p[t.seeds[k]]}`" for k in tl.SEED_KEYS)
+        lines.append(f"| `{t.id}` | {md(t.name)} | `{t.slug}` | {t.status} | {seeds} |")
     for t in themes:
         d = t.dir.relative_to(root).as_posix()
         typo = t.typography
         results = tl.contrast_results(t, specs)
+        separations = tl.series_separation(t)
         by_subject = {r.subject: r for r in results}
         hexes = t.role_hex()
         lines += ["", f"### {t.id} {md(t.name)}", ""]
         if t.status == "deprecated":
             lines += ["> **deprecated**: 新しいプロジェクトでは使わない。", ""]
         lines += [
+            f'<img src="dist/{t.id}/preview/3-body.svg" width="720" alt="{md(t.label)} の本文スライドの見本">',
+            "",
+            f"見本スライド 5 枚（表紙・セクション扉・本文・グラフ・役割一覧）: [{d}/README.md]({d}/README.md#プレビュー)",
+            "",
             f"![{md(t.label)} の色見本](dist/{t.id}/swatches.svg)",
             "",
             f"- slug: `{t.slug}` / 状態: `{t.status}`",
@@ -337,23 +627,36 @@ def render_readme_section(themes: List[tl.Theme], specs: Dict[str, tl.RoleSpec],
             f"和文 {typo['east_asian']}（代替: {', '.join(typo['fallbacks']['east_asian'])}）",
             f"- 使い方のルール: [{d}/README.md]({d}/README.md) ・ 正本: [{d}/theme.json]({d}/theme.json) ・ 生成物: [dist/{t.id}/](dist/{t.id}/)",
             "",
-            "| role | palette | hex | 使われ方 | 検査 | コントラスト |",
-            "|---|---|---|---|---|---|",
+            "**種色**（値は変えない。白地・帯の上で基準に届かない種色は、その用途にだけ明度を変えた色を使う）",
+            "",
+            *_seed_rows(t),
+            "",
+            "| role | palette | hex | 由来 | 使われ方 | 検査 | コントラスト |",
+            "|---|---|---|---|---|---|---|",
         ]
         for role, spec in t.roles.items():
             lines.append(
-                f"| `{role}` | `{spec['color']}` | `{hexes[role]}` | {md(spec['usage'])} | {KIND_JA[specs[role].kind]} "
-                f"| {_contrast_cell(by_subject.get(role))} |"
+                f"| `{role}` | `{spec['color']}` | `{hexes[role]}` | {_origin(t, spec['color'])} | {md(spec['usage'])} "
+                f"| {KIND_JA[specs[role].kind]} | {_contrast_cell(by_subject.get(role))} |"
             )
         lines += ["", f"**グラフ系列色（`chart.series`）: {CHART_STATUS_JA[t.chart_status]}**", ""]
         if t.series_names:
             for i, (name, hex_) in enumerate(zip(t.series_names, t.series_hex())):
-                lines.append(f"{i + 1}. `{name}` `{hex_}` — {_contrast_cell(by_subject[f'chart.series[{i}]'])}")
+                lines.append(
+                    f"{i + 1}. `{name}` `{hex_}` — {_origin(t, name)}、{_contrast_cell(by_subject[f'chart.series[{i}]'])}"
+                )
+            if separations:
+                worst = min(separations, key=lambda r: r.delta_e)
+                lines += [
+                    "",
+                    f"系列色どうしの最小の色差: ΔE00 {worst.delta_e:.1f}（{cl.VISION_JA[worst.vision]}、{worst.i + 1} と {worst.j + 1}）。"
+                    f"一般色覚と 1〜3 型色覚のシミュレーションで計算し、目安 {tl.SERIES_MIN_DE:g} 未満を警告する。",
+                ]
         else:
             lines.append("未定義")
-        warnings = [r for r in results if r.is_warning]
-        lines += ["", "**コントラスト警告**（元資料の値は変更していない）", ""]
-        lines += [f"- ⚠ {r.describe()}" for r in warnings] if warnings else ["- なし"]
+        warnings = [r.describe() for r in results if r.is_warning] + [r.describe() for r in separations if r.is_warning]
+        lines += ["", "**警告**（種色の値は変更していない）", ""]
+        lines += [f"- ⚠ {w}" for w in warnings] if warnings else ["- なし"]
     lines += ["", README_END]
     return "\n".join(lines)
 
@@ -362,11 +665,11 @@ def md(text: str) -> str:
     return tl.md_escape(text)
 
 
-def render_readme(current: str, section: str) -> str:
-    begin, end = current.find(README_BEGIN), current.find(README_END)
+def replace_section(current: str, begin_marker: str, end_marker: str, section: str, where: str) -> str:
+    begin, end = current.find(begin_marker), current.find(end_marker)
     if begin < 0 or end < begin:
-        raise BuildError(f"README.md に {README_BEGIN} と {README_END} の区間がありません")
-    return current[:begin] + section + current[end + len(README_END) :]
+        raise BuildError(f"{where} に {begin_marker} と {end_marker} の区間がありません")
+    return current[:begin] + section + current[end + len(end_marker) :]
 
 
 # --------------------------------------------------------------------------- driver
@@ -390,10 +693,22 @@ def render_all(root: Path) -> Dict[str, str]:
         outputs[f"{base}/theme-colors.sty"] = render_sty(t, root)
         outputs[f"{base}/claude-design-system/tokens.json"] = render_claude_tokens(t)
         outputs[f"{base}/swatches.svg"] = render_svg(t)
+        slides = render_previews(t, specs)
+        for name, _ in PREVIEWS:
+            outputs[f"{base}/preview/{name}.svg"] = slides[name].render()
+        theme_readme = t.dir / "README.md"
+        rel = theme_readme.relative_to(root).as_posix()
+        if not theme_readme.is_file():
+            raise BuildError(f"{rel} がありません（scripts/derive.py で作るか、既存テーマの README をひな形にする）")
+        outputs[rel] = replace_section(
+            tl.read_text(theme_readme), PREVIEW_BEGIN, PREVIEW_END, render_theme_preview_section(t, slides), rel
+        )
     readme = root / "README.md"
     if not readme.is_file():
         raise BuildError("README.md がありません")
-    outputs["README.md"] = render_readme(tl.read_text(readme), render_readme_section(themes, specs, root))
+    outputs["README.md"] = replace_section(
+        tl.read_text(readme), README_BEGIN, README_END, render_readme_section(themes, specs, root), "README.md"
+    )
     return outputs
 
 

@@ -4,7 +4,7 @@
   "title": "Design theme",
   "description": "themes/<番号>-<slug>/theme.json の形式。roles のキー集合は全テーマ共通で、ここで固定する。各 role の x-contrast は scripts/check.py のコントラスト検査で使う（against = 背景になる role、kind = text / large-text / graphic / decorative / surface）。",
   "type": "object",
-  "required": ["id", "slug", "name", "status", "source", "palette", "roles", "typography", "chart", "notes"],
+  "required": ["id", "slug", "name", "status", "source", "seeds", "palette", "roles", "typography", "chart", "notes"],
   "additionalProperties": false,
   "properties": {
     "$schema": { "type": "string" },
@@ -24,8 +24,19 @@
       "enum": ["active", "deprecated"]
     },
     "source": { "description": "値の出典。", "type": "string", "minLength": 1 },
+    "seeds": {
+      "description": "テーマの種色（人が決める 3 色）。palette の名前を参照する。種色以外の色は scripts/derive.py が種色から導出する。",
+      "type": "object",
+      "required": ["base", "accent", "sub"],
+      "additionalProperties": false,
+      "properties": {
+        "base": { "description": "ベースカラー（主役の色。帯・強調）。", "$ref": "#/$defs/paletteName" },
+        "accent": { "description": "アクセントカラー（線・目印）。", "$ref": "#/$defs/paletteName" },
+        "sub": { "description": "サブカラー（帯の上の文字・区切り線など）。", "$ref": "#/$defs/paletteName" }
+      }
+    },
     "palette": {
-      "description": "生の色。名前は色の見た目で付ける（例: brown-700）。",
+      "description": "生の色。名前は <色名>-<明度>（明度 = CIE L* を四捨五入した 0〜100。例: brown-30）。",
       "type": "object",
       "minProperties": 1,
       "propertyNames": { "$ref": "#/$defs/paletteName" },
@@ -131,7 +142,7 @@
       "additionalProperties": false,
       "properties": {
         "status": {
-          "description": "元資料に定義がない場合は provisional（暫定案・要確認）。",
+          "description": "確認されるまでは provisional（暫定案・要確認）。",
           "enum": ["provisional", "confirmed"]
         },
         "series": {
@@ -142,7 +153,7 @@
       }
     },
     "notes": {
-      "description": "注意事項。コントラスト基準未満の role は、その role 名をバッククォートで囲んで記載する。",
+      "description": "注意事項。コントラスト基準未満の role（系列色は palette 名）と、色差が目安未満の系列色の palette 名は、バッククォートで囲んで記載する（scripts/derive.py が自動で書く）。",
       "type": "array",
       "items": { "type": "string", "minLength": 1 }
     }
@@ -171,7 +182,20 @@
             "hlink", "folHlink"
           ]
         },
+        "derived": { "$ref": "#/$defs/derived" },
         "note": { "type": "string", "minLength": 1 }
+      }
+    },
+    "derived": {
+      "description": "導出した色の由来。check.py が hex を再計算して一致を確かめる。手で値を変えるときは derived を消す。from（種色の palette 名。色相と、chroma がなければ彩度もそこから取る）か hue（OKLCH の色相）のどちらか一方を指定する。",
+      "type": "object",
+      "required": ["tone"],
+      "additionalProperties": false,
+      "properties": {
+        "from": { "$ref": "#/$defs/paletteName" },
+        "hue": { "description": "OKLCH の色相（度）。", "type": "number", "minimum": 0, "maximum": 360 },
+        "chroma": { "description": "OKLCH の彩度。sRGB に収まらなければ収まる最大値まで下げる。", "type": "number", "minimum": 0, "maximum": 0.4 },
+        "tone": { "description": "明度（CIE L*）。", "type": "integer", "minimum": 0, "maximum": 100 }
       }
     },
     "role": {

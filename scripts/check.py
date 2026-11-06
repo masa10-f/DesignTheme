@@ -3,9 +3,11 @@
 
 エラー（終了コード 1）:
   スキーマ違反、存在しない palette 名の参照、pptx_slot の重複、ディレクトリ名と id/slug の不一致、
-  番号の重複・欠番、テーマ間での roles キーの不一致
+  番号の重複・欠番、テーマ間での roles キーの不一致、種色（seeds）の不備、
+  導出した色（derived）と hex の不一致
 警告（終了コード 0）:
-  WCAG コントラスト比の基準未満（小さい文字 4.5:1、線・図形 3:1）、notes への記載漏れ
+  WCAG コントラスト比の基準未満（小さい文字 4.5:1、線・図形 3:1）、
+  系列色どうしの色差が目安未満（色覚シミュレーションを含む）、notes への記載漏れ
 
 使い方:
   python scripts/check.py
@@ -112,6 +114,35 @@ def run_checks(root: Path) -> List[Finding]:
             if name not in palette:
                 add("error", where, f"chart.series[{i}]: palette に {name!r} がありません")
 
+        seeds = data["seeds"]
+        seed_names = set(seeds.values())
+        for key, name in seeds.items():
+            if name not in palette:
+                add("error", where, f"seeds.{key}: palette に {name!r} がありません")
+            elif "derived" in palette[name]:
+                add("error", where, f"seeds.{key}: 種色 {name!r} には derived を付けられません（種色は人が決める値）")
+        if len(seed_names) != len(seeds):
+            add("error", where, "seeds の 3 色は別々の palette 名にしてください")
+        for name, entry in palette.items():
+            derived = entry.get("derived")
+            if derived is None:
+                continue
+            if ("from" in derived) == ("hue" in derived):
+                add("error", where, f"palette.{name}.derived: from と hue のどちらか一方を指定してください")
+            elif "hue" in derived and "chroma" not in derived:
+                add("error", where, f"palette.{name}.derived: hue を使うときは chroma も指定してください")
+            elif "from" in derived and (derived["from"] not in seed_names or derived["from"] not in palette):
+                add("error", where, f"palette.{name}.derived.from: {derived['from']!r} は種色（seeds）ではありません")
+            else:
+                expected = tl.derived_hex(palette, derived)
+                if expected != entry["hex"]:
+                    add(
+                        "error",
+                        where,
+                        f"palette.{name}: derived から計算した値 {expected} と hex {entry['hex']} が一致しません"
+                        "（値を手で変えたなら derived を消す。種色を変えたなら scripts/derive.py で作り直す）",
+                    )
+
         slot_owner: Dict[str, str] = {}
         for name, entry in palette.items():
             slot = entry.get("pptx_slot")
@@ -175,6 +206,11 @@ def run_checks(root: Path) -> List[Finding]:
                     add("warning", where, f"notes に `{result.ack_key}` のコントラスト警告が書かれていません")
             elif result.status == "decorative":
                 add("info", where, result.describe())
+        for sep in tl.series_separation(theme):
+            if sep.is_warning:
+                add("warning", where, sep.describe())
+                if f"`{sep.ack_key}`" not in notes:
+                    add("warning", where, f"notes に `{sep.ack_key}` の色差の警告が書かれていません")
         if theme.chart_status == "provisional":
             add("info", where, "chart.series は暫定案（provisional）です。README に「暫定案・要確認」と明記すること")
         if theme.status == "deprecated":
@@ -248,6 +284,9 @@ def compare_pptx(path: Path, root: Path, theme_ids: Optional[List[str]] = None) 
             Finding("info", where, f"{member}: clrScheme {scheme_name!r} = " + ", ".join(f"{k} {v}" for k, v in slots.items()))
         )
         for theme in themes:
+            if not any("pptx_slot" in e for e in theme.data["palette"].values()):
+                findings.append(Finding("info", where, f"{member} ↔ {theme.label}: pptx_slot がないため照合しない"))
+                continue
             mismatches = []
             mapped = set()
             for name, entry in theme.data["palette"].items():

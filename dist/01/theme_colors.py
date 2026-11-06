@@ -11,48 +11,47 @@ THEME_STATUS = "active"
 # role 名 → hex。コードではこれを使う。
 COLORS = {
     "background": "#FFFFFF",
-    "text": "#242424",
-    "text-secondary": "#666666",
+    "text": "#292524",
+    "text-secondary": "#625D5C",
     "band": "#70372C",
     "on-band": "#F7E3AF",
-    "category": "#C4B2AB",
+    "category": "#E9A697",
     "emphasis": "#70372C",
     "accent": "#DC5F36",
-    "section-label": "#DC5F36",
+    "section-label": "#C84C22",
     "rule": "#F7E3AF",
-    "placeholder-bg": "#F7F7F6",
-    "placeholder-border": "#E2E1DD",
-    "placeholder-text": "#777777",
+    "placeholder-bg": "#FBF5F4",
+    "placeholder-border": "#E1DCDA",
+    "placeholder-text": "#625D5C",
 }
 
 # グラフの系列色（chart.series）。状態: provisional（暫定案・要確認）
 CHART_SERIES = [
     "#70372C",
     "#DC5F36",
-    "#666666",
-    "#C4B2AB",
+    "#00A56C",
+    "#6F8BEE",
+    "#005C64",
+    "#B55498",
 ]
 CHART_SERIES_STATUS = "provisional"
 
 # palette 名 → hex（生の色。直接使わず COLORS を使う）
 PALETTE = {
-    "gray-900": "#242424",
+    "brown-30": "#70372C",
+    "orange-56": "#DC5F36",
+    "cream-91": "#F7E3AF",
     "white": "#FFFFFF",
-    "blue-800": "#0E2841",
-    "gray-100": "#E8E8E8",
-    "brown-700": "#70372C",
-    "orange-400": "#DC5F36",
-    "cream-100": "#F7E3AF",
-    "beige-100": "#DCD5C8",
-    "cool-gray-300": "#A2A2AD",
-    "navy-800": "#1F1E63",
-    "teal-500": "#467886",
-    "plum-500": "#96607D",
-    "taupe-300": "#C4B2AB",
-    "gray-600": "#666666",
-    "warm-gray-50": "#F7F7F6",
-    "warm-gray-100": "#E2E1DD",
-    "gray-500": "#777777",
+    "neutral-15": "#292524",
+    "neutral-40": "#625D5C",
+    "neutral-88": "#E1DCDA",
+    "neutral-97": "#FBF5F4",
+    "brown-74": "#E9A697",
+    "orange-49": "#C84C22",
+    "green-60": "#00A56C",
+    "blue-60": "#6F8BEE",
+    "teal-35": "#005C64",
+    "magenta-50": "#B55498",
 }
 
 FONT_LATIN = "Arial"

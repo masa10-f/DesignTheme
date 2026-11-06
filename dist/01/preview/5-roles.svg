@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 1920 1080" font-family="Arial, Helvetica, &quot;Meiryo UI&quot;, &quot;Hiragino Sans&quot;, &quot;Noto Sans JP&quot;, sans-serif" role="img">
+  <title>01 Brown &amp; Orange — 役割一覧</title>
+  <rect width="1920" height="1080" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1920" height="128" fill="#70372C"/>
+  <text x="128" y="84" font-size="56" fill="#F7E3AF" font-weight="bold">Roles · 01 Brown &amp; Orange</text>
+  <text x="1792" y="76" font-size="28" fill="#E9A697" font-weight="bold" text-anchor="end" letter-spacing="3">ROLES</text>
+  <text x="128" y="196" font-size="28" fill="#292524" font-weight="bold">Seeds</text>
+  <rect x="260" y="156" width="64" height="64" fill="#70372C" stroke="#CFCFCF" stroke-width="2" rx="8"/>
+  <text x="340" y="180" font-size="26" fill="#292524" font-weight="bold">Base  brown-30</text>
+  <text x="340" y="212" font-size="24" fill="#625D5C">#70372C · on white 9.24:1 text OK</text>
+  <rect x="780" y="156" width="64" height="64" fill="#DC5F36" stroke="#CFCFCF" stroke-width="2" rx="8"/>
+  <text x="860" y="180" font-size="26" fill="#292524" font-weight="bold">Accent  orange-56</text>
+  <text x="860" y="212" font-size="24" fill="#625D5C">#DC5F36 · on white 3.66:1 lines only</text>
+  <rect x="1300" y="156" width="64" height="64" fill="#F7E3AF" stroke="#CFCFCF" stroke-width="2" rx="8"/>
+  <text x="1380" y="180" font-size="26" fill="#292524" font-weight="bold">Sub  cream-91</text>
+  <text x="1380" y="212" font-size="24" fill="#625D5C">#F7E3AF · on white 1.26:1 not on white</text>
+  <rect x="128" y="268" width="64" height="64" fill="#FFFFFF" stroke="#CFCFCF" stroke-width="2" rx="8"/>
+  <text x="212" y="294" font-size="28" fill="#292524" font-weight="bold" font-family="'Courier New', Courier, monospace">background</text>
+  <text x="212" y="328" font-size="24" fill="#625D5C">white · #FFFFFF</text>
+  <text x="568" y="296" font-size="26" fill="#292524">surface</text>
+  <rect x="128" y="368" width="64" height="64" fill="#292524" stroke="#CFCFCF" stroke-width="2" rx="8"/>
+  <text x="212" y="394" font-size="28" fill="#292524" font-weight="bold" font-family="'Courier New', Courier, monospace">text</text>
+  <text x="212" y="428" font-size="24" fill="#625D5C">neutral-15 · #292524</text>
+  <text x="568" y="396" font-size="26" fill="#292524">15.16:1 OK</text>
+  <text x="568" y="428" font-size="24" fill="#625D5C">vs background</text>
+  <rect x="128" y="468" width="64" height="64" fill="#625D5C" stroke="#CFCFCF" stroke-width="2" rx="8"/>
+  <text x="212" y="494" font-size="28" fill="#292524" font-weight="bold" font-family="'Courier New', Courier, monospace">text-secondary</text>
+  <text x="212" y="528" font-size="24" fill="#625D5C">neutral-40 · #625D5C</text>
+  <text x="568" y="496" font-size="26" fill="#292524">6.48:1 OK</text>
+  <text x="568" y="528" font-size="24" fill="#625D5C">vs background</text>
+  <rect x="128" y="568" width="64" height="64" fill="#70372C" stroke="#CFCFCF" stroke-width="2" rx="8"/>
+  <text x="212" y="594" font-size="28" fill="#292524" font-weight="bold" font-family="'Courier New', Courier, monospace">band</text>
+  <text x="212" y="628" font-size="24" fill="#625D5C">brown-30 · #70372C</text>
+  <text x="568" y="596" font-size="26" fill="#292524">surface</text>
+  <rect x="128" y="668" width="64" height="64" fill="#F7E3AF" stroke="#CFCFCF" stroke-width="2" rx="8"/>
+  <text x="212" y="694" font-size="28" fill="#292524" font-weight="bold" font-family="'Courier New', Courier, monospace">on-band</text>
+  <text x="212" y="728" font-size="24" fill="#625D5C">cream-91 · #F7E3AF</text>
+  <text x="568" y="696" font-size="26" fill="#292524">7.29:1 OK</text>
+  <text x="568" y="728" font-size="24" fill="#625D5C">vs band</text>
+  <rect x="128" y="768" width="64" height="64" fill="#E9A697" stroke="#CFCFCF" stroke-width="2" rx="8"/>
+  <text x="212" y="794" font-size="28" fill="#292524" font-weight="bold" font-family="'Courier New', Courier, monospace">category</text>
+  <text x="212" y="828" font-size="24" fill="#625D5C">brown-74 · #E9A697</text>
+  <text x="568" y="796" font-size="26" fill="#292524">4.56:1 OK</text>
+  <text x="568" y="828" font-size="24" fill="#625D5C">vs band</text>
+  <rect x="128" y="868" width="64" height="64" fill="#70372C" stroke="#CFCFCF" stroke-width="2" rx="8"/>
+  <text x="212" y="894" font-size="28" fill="#292524" font-weight="bold" font-family="'Courier New', Courier, monospace">emphasis</text>
+  <text x="212" y="928" font-size="24" fill="#625D5C">brown-30 · #70372C</text>
+  <text x="568" y="896" font-size="26" fill="#292524">9.24:1 OK</text>
+  <text x="568" y="928" font-size="24" fill="#625D5C">vs background</text>
+  <rect x="992" y="268" width="64" height="64" fill="#DC5F36" stroke="#CFCFCF" stroke-width="2" rx="8"/>
+  <text x="1076" y="294" font-size="28" fill="#292524" font-weight="bold" font-family="'Courier New', Courier, monospace">accent</text>
+  <text x="1076" y="328" font-size="24" fill="#625D5C">orange-56 · #DC5F36</text>
+  <text x="1432" y="296" font-size="26" fill="#292524">3.66:1 lines only</text>
+  <text x="1432" y="328" font-size="24" fill="#625D5C">vs background</text>
+  <rect x="992" y="368" width="64" height="64" fill="#C84C22" stroke="#CFCFCF" stroke-width="2" rx="8"/>
+  <text x="1076" y="394" font-size="28" fill="#292524" font-weight="bold" font-family="'Courier New', Courier, monospace">section-label</text>
+  <text x="1076" y="428" font-size="24" fill="#625D5C">orange-49 · #C84C22</text>
+  <text x="1432" y="396" font-size="26" fill="#292524">4.65:1 OK</text>
+  <text x="1432" y="428" font-size="24" fill="#625D5C">vs background</text>
+  <rect x="992" y="468" width="64" height="64" fill="#F7E3AF" stroke="#CFCFCF" stroke-width="2" rx="8"/>
+  <text x="1076" y="494" font-size="28" fill="#292524" font-weight="bold" font-family="'Courier New', Courier, monospace">rule</text>
+  <text x="1076" y="528" font-size="24" fill="#625D5C">cream-91 · #F7E3AF</text>
+  <text x="1432" y="496" font-size="26" fill="#292524">1.26:1 decorative</text>
+  <text x="1432" y="528" font-size="24" fill="#625D5C">vs background</text>
+  <rect x="992" y="568" width="64" height="64" fill="#FBF5F4" stroke="#CFCFCF" stroke-width="2" rx="8"/>
+  <text x="1076" y="594" font-size="28" fill="#292524" font-weight="bold" font-family="'Courier New', Courier, monospace">placeholder-bg</text>
+  <text x="1076" y="628" font-size="24" fill="#625D5C">neutral-97 · #FBF5F4</text>
+  <text x="1432" y="596" font-size="26" fill="#292524">surface</text>
+  <rect x="992" y="668" width="64" height="64" fill="#E1DCDA" stroke="#CFCFCF" stroke-width="2" rx="8"/>
+  <text x="1076" y="694" font-size="28" fill="#292524" font-weight="bold" font-family="'Courier New', Courier, monospace">placeholder-border</text>
+  <text x="1076" y="728" font-size="24" fill="#625D5C">neutral-88 · #E1DCDA</text>
+  <text x="1432" y="696" font-size="26" fill="#292524">1.26:1 decorative</text>
+  <text x="1432" y="728" font-size="24" fill="#625D5C">vs placeholder-bg</text>
+  <rect x="992" y="768" width="64" height="64" fill="#625D5C" stroke="#CFCFCF" stroke-width="2" rx="8"/>
+  <text x="1076" y="794" font-size="28" fill="#292524" font-weight="bold" font-family="'Courier New', Courier, monospace">placeholder-text</text>
+  <text x="1076" y="828" font-size="24" fill="#625D5C">neutral-40 · #625D5C</text>
+  <text x="1432" y="796" font-size="26" fill="#292524">6.00:1 OK</text>
+  <text x="1432" y="828" font-size="24" fill="#625D5C">vs placeholder-bg</text>
+  <rect x="0" y="1000" width="1920" height="80" fill="#70372C"/>
+  <text x="128" y="1050" font-size="28" fill="#F7E3AF">[Date] · Group meeting</text>
+  <text x="1792" y="1050" font-size="28" fill="#F7E3AF" font-weight="bold" text-anchor="end">5</text>
+  <rect x="1" y="1" width="1918" height="1078" fill="none" stroke="#C8C8C8" stroke-width="2"/>
+</svg>

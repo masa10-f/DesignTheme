@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 1920 1080" font-family="Arial, Helvetica, &quot;Meiryo UI&quot;, &quot;Hiragino Sans&quot;, &quot;Noto Sans JP&quot;, sans-serif" role="img">
+  <title>01 Brown &amp; Orange — 表紙</title>
+  <rect width="1920" height="1080" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1920" height="112" fill="#70372C"/>
+  <text x="128" y="68" font-size="36" fill="#F7E3AF" font-weight="bold">Weekly Research Meeting</text>
+  <text x="1792" y="66" font-size="28" fill="#E9A697" font-weight="bold" text-anchor="end" letter-spacing="3">THEME 01</text>
+  <rect x="600" y="38" width="129" height="36" rx="8" fill="#FFFFFF" stroke="#111111" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="614" y="64" font-size="24" fill="#111111" font-weight="bold" font-family="'Courier New', Courier, monospace">on-band</text>
+  <rect x="920" y="38" width="86" height="36" rx="8" fill="#FFFFFF" stroke="#111111" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="934" y="64" font-size="24" fill="#111111" font-weight="bold" font-family="'Courier New', Courier, monospace">band</text>
+  <rect x="1350" y="38" width="144" height="36" rx="8" fill="#FFFFFF" stroke="#111111" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="1364" y="64" font-size="24" fill="#111111" font-weight="bold" font-family="'Courier New', Courier, monospace">category</text>
+  <rect x="128" y="262" width="144" height="36" rx="8" fill="#FFFFFF" stroke="#111111" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="142" y="288" font-size="24" fill="#111111" font-weight="bold" font-family="'Courier New', Courier, monospace">emphasis</text>
+  <text x="128" y="398" font-size="96" fill="#70372C" font-weight="bold">Seed-based Color Themes</text>
+  <text x="128" y="504" font-size="96" fill="#70372C" font-weight="bold">for Research Slides</text>
+  <rect x="128" y="560" width="420" height="12" fill="#DC5F36"/>
+  <rect x="576" y="548" width="115" height="36" rx="8" fill="#FFFFFF" stroke="#111111" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="590" y="574" font-size="24" fill="#111111" font-weight="bold" font-family="'Courier New', Courier, monospace">accent</text>
+  <text x="128" y="656" font-size="40" fill="#292524">[Author Name] · [Affiliation]</text>
+  <rect x="820" y="626" width="86" height="36" rx="8" fill="#FFFFFF" stroke="#111111" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="834" y="652" font-size="24" fill="#111111" font-weight="bold" font-family="'Courier New', Courier, monospace">text</text>
+  <text x="128" y="718" font-size="30" fill="#625D5C">Demo deck — theme 01 Brown &amp; Orange</text>
+  <rect x="820" y="692" width="230" height="36" rx="8" fill="#FFFFFF" stroke="#111111" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="834" y="718" font-size="24" fill="#111111" font-weight="bold" font-family="'Courier New', Courier, monospace">text-secondary</text>
+  <rect x="0" y="1000" width="1920" height="80" fill="#70372C"/>
+  <text x="128" y="1050" font-size="28" fill="#F7E3AF">[Date] · Group meeting</text>
+  <text x="1792" y="1050" font-size="28" fill="#F7E3AF" font-weight="bold" text-anchor="end">1</text>
+  <rect x="1" y="1" width="1918" height="1078" fill="none" stroke="#C8C8C8" stroke-width="2"/>
+</svg>

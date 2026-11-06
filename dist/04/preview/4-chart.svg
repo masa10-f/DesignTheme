@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 1920 1080" font-family="Arial, Helvetica, &quot;Meiryo UI&quot;, &quot;Hiragino Sans&quot;, &quot;Noto Sans JP&quot;, sans-serif" role="img">
+  <title>04 Slate &amp; Teal — グラフ</title>
+  <rect width="1920" height="1080" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1920" height="128" fill="#34485E"/>
+  <text x="128" y="84" font-size="56" fill="#7CC1AB" font-weight="bold">Results</text>
+  <text x="1792" y="76" font-size="28" fill="#9EB6D0" font-weight="bold" text-anchor="end" letter-spacing="3">RESULTS</text>
+  <line x1="168" y1="210" x2="168" y2="690" stroke="#5C5F62" stroke-width="3"/>
+  <line x1="168" y1="690" x2="1118" y2="690" stroke="#5C5F62" stroke-width="3"/>
+  <polyline points="188,620 280,577 372,560 464,579 556,624 648,665 740,680 832,658 924,613 1016,572" fill="none" stroke="#34485E" stroke-width="6" stroke-linejoin="round"/>
+  <circle cx="188" cy="620" r="9" fill="#34485E"/>
+  <circle cx="464" cy="579" r="9" fill="#34485E"/>
+  <circle cx="740" cy="680" r="9" fill="#34485E"/>
+  <circle cx="1016" cy="572" r="9" fill="#34485E"/>
+  <polyline points="188,515 280,511 372,542 464,589 556,623 648,624 740,590 832,544 924,512 1016,514" fill="none" stroke="#3C7D9B" stroke-width="6" stroke-linejoin="round"/>
+  <circle cx="188" cy="515" r="9" fill="#3C7D9B"/>
+  <circle cx="464" cy="589" r="9" fill="#3C7D9B"/>
+  <circle cx="740" cy="590" r="9" fill="#3C7D9B"/>
+  <circle cx="1016" cy="514" r="9" fill="#3C7D9B"/>
+  <polyline points="188,467 280,508 372,553 464,576 556,562 648,521 740,477 832,456 924,472 1016,515" fill="none" stroke="#5B9F8A" stroke-width="6" stroke-linejoin="round"/>
+  <circle cx="188" cy="467" r="9" fill="#5B9F8A"/>
+  <circle cx="464" cy="576" r="9" fill="#5B9F8A"/>
+  <circle cx="740" cy="477" r="9" fill="#5B9F8A"/>
+  <circle cx="1016" cy="515" r="9" fill="#5B9F8A"/>
+  <polyline points="188,473 280,513 372,523 464,497 556,451 648,413 740,406 832,434 924,480 1016,517" fill="none" stroke="#B87252" stroke-width="6" stroke-linejoin="round"/>
+  <circle cx="188" cy="473" r="9" fill="#B87252"/>
+  <circle cx="464" cy="497" r="9" fill="#B87252"/>
+  <circle cx="740" cy="406" r="9" fill="#B87252"/>
+  <circle cx="1016" cy="517" r="9" fill="#B87252"/>
+  <polyline points="188,469 280,465 372,429 464,382 556,354 648,361 740,399 832,445 924,471 1016,461" fill="none" stroke="#505700" stroke-width="6" stroke-linejoin="round"/>
+  <circle cx="188" cy="469" r="9" fill="#505700"/>
+  <circle cx="464" cy="382" r="9" fill="#505700"/>
+  <circle cx="740" cy="399" r="9" fill="#505700"/>
+  <circle cx="1016" cy="461" r="9" fill="#505700"/>
+  <polyline points="188,402 280,359 372,316 464,300 556,320 648,365 740,406 832,420 924,397 1016,352" fill="none" stroke="#843B44" stroke-width="6" stroke-linejoin="round"/>
+  <circle cx="188" cy="402" r="9" fill="#843B44"/>
+  <circle cx="464" cy="300" r="9" fill="#843B44"/>
+  <circle cx="740" cy="406" r="9" fill="#843B44"/>
+  <circle cx="1016" cy="352" r="9" fill="#843B44"/>
+  <rect x="1282" y="310" width="64" height="380" fill="#34485E"/>
+  <rect x="1366" y="390" width="64" height="300" fill="#3C7D9B"/>
+  <rect x="1450" y="350" width="64" height="340" fill="#5B9F8A"/>
+  <rect x="1534" y="440" width="64" height="250" fill="#B87252"/>
+  <rect x="1618" y="400" width="64" height="290" fill="#505700"/>
+  <rect x="1702" y="480" width="64" height="210" fill="#843B44"/>
+  <line x1="1262" y1="690" x2="1782" y2="690" stroke="#5C5F62" stroke-width="3"/>
+  <text x="128" y="186" font-size="26" fill="#242629" font-weight="bold">Score</text>
+  <rect x="240" y="158" width="86" height="36" rx="8" fill="#FFFFFF" stroke="#111111" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="254" y="184" font-size="24" fill="#111111" font-weight="bold" font-family="'Courier New', Courier, monospace">text</text>
+  <text x="1118" y="730" font-size="26" fill="#242629" font-weight="bold" text-anchor="end">Epoch</text>
+  <rect x="600" y="702" width="230" height="36" rx="8" fill="#FFFFFF" stroke="#111111" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="614" y="728" font-size="24" fill="#111111" font-weight="bold" font-family="'Courier New', Courier, monospace">text-secondary</text>
+  <rect x="128" y="738" width="201" height="36" rx="8" fill="#FFFFFF" stroke="#111111" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="142" y="764" font-size="24" fill="#111111" font-weight="bold" font-family="'Courier New', Courier, monospace">chart.series</text>
+  <rect x="128" y="790" width="40" height="40" fill="#34485E" rx="6"/>
+  <text x="180" y="810" font-size="26" fill="#242629" font-weight="bold">1  slate-30</text>
+  <text x="180" y="842" font-size="24" fill="#5C5F62">#34485E</text>
+  <rect x="404" y="790" width="40" height="40" fill="#3C7D9B" rx="6"/>
+  <text x="456" y="810" font-size="26" fill="#242629" font-weight="bold">2  teal-49</text>
+  <text x="456" y="842" font-size="24" fill="#5C5F62">#3C7D9B</text>
+  <rect x="680" y="790" width="40" height="40" fill="#5B9F8A" rx="6"/>
+  <text x="732" y="810" font-size="26" fill="#242629" font-weight="bold">3  sea-green-61</text>
+  <text x="732" y="842" font-size="24" fill="#5C5F62">#5B9F8A</text>
+  <rect x="956" y="790" width="40" height="40" fill="#B87252" rx="6"/>
+  <text x="1008" y="810" font-size="26" fill="#242629" font-weight="bold">4  orange-55</text>
+  <text x="1008" y="842" font-size="24" fill="#5C5F62">#B87252</text>
+  <rect x="1232" y="790" width="40" height="40" fill="#505700" rx="6"/>
+  <text x="1284" y="810" font-size="26" fill="#242629" font-weight="bold">5  olive-35</text>
+  <text x="1284" y="842" font-size="24" fill="#5C5F62">#505700</text>
+  <rect x="1508" y="790" width="40" height="40" fill="#843B44" rx="6"/>
+  <text x="1560" y="810" font-size="26" fill="#242629" font-weight="bold">6  red-35</text>
+  <text x="1560" y="842" font-size="24" fill="#5C5F62">#843B44</text>
+  <text x="128" y="906" font-size="26" fill="#5C5F62">chart.series (provisional) — smallest difference ΔE00 10.3 (tritan, 2 vs 3)</text>
+  <rect x="0" y="1000" width="1920" height="80" fill="#34485E"/>
+  <text x="128" y="1050" font-size="28" fill="#7CC1AB">[Date] · Group meeting</text>
+  <text x="1792" y="1050" font-size="28" fill="#7CC1AB" font-weight="bold" text-anchor="end">4</text>
+  <rect x="1" y="1" width="1918" height="1078" fill="none" stroke="#C8C8C8" stroke-width="2"/>
+</svg>
