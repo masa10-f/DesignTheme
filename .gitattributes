@@ -1,0 +1,4 @@
+# 生成物の改行を OS によらず LF にそろえる（build.py の出力と git の内容を一致させるため）
+* text=auto eol=lf
+*.pptx binary
+*.png binary

@@ -1,0 +1,191 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/masa10-f/DesignTheme/schema/theme.schema.json",
+  "title": "Design theme",
+  "description": "themes/<番号>-<slug>/theme.json の形式。roles のキー集合は全テーマ共通で、ここで固定する。各 role の x-contrast は scripts/check.py のコントラスト検査で使う（against = 背景になる role、kind = text / large-text / graphic / decorative / surface）。",
+  "type": "object",
+  "required": ["id", "slug", "name", "status", "source", "palette", "roles", "typography", "chart", "notes"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "id": {
+      "description": "テーマ番号（永久ID）。ディレクトリ名の先頭と一致させる。振り直し・再利用はしない。",
+      "type": "string",
+      "pattern": "^[0-9]{2,}$"
+    },
+    "slug": {
+      "description": "ディレクトリ名の番号以降と一致させる。",
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "name": { "type": "string", "minLength": 1 },
+    "status": {
+      "description": "廃止するテーマは削除せず deprecated にする。",
+      "enum": ["active", "deprecated"]
+    },
+    "source": { "description": "値の出典。", "type": "string", "minLength": 1 },
+    "palette": {
+      "description": "生の色。名前は色の見た目で付ける（例: brown-700）。",
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": { "$ref": "#/$defs/paletteName" },
+      "additionalProperties": { "$ref": "#/$defs/paletteEntry" }
+    },
+    "roles": {
+      "description": "意味づけ。palette の名前を参照する。キー集合は全テーマ共通。",
+      "type": "object",
+      "required": [
+        "background", "text", "text-secondary", "band", "on-band", "category", "emphasis",
+        "accent", "section-label", "rule", "placeholder-bg", "placeholder-border", "placeholder-text"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "background": {
+          "description": "スライド・ページの背景。",
+          "x-contrast": { "kind": "surface" },
+          "$ref": "#/$defs/role"
+        },
+        "text": {
+          "description": "本文の文字。",
+          "x-contrast": { "against": "background", "kind": "text" },
+          "$ref": "#/$defs/role"
+        },
+        "text-secondary": {
+          "description": "参考文献・図キャプションなど補助的な文字。",
+          "x-contrast": { "against": "background", "kind": "text" },
+          "$ref": "#/$defs/role"
+        },
+        "band": {
+          "description": "ヘッダー帯・フッター帯の塗り。",
+          "x-contrast": { "kind": "surface" },
+          "$ref": "#/$defs/role"
+        },
+        "on-band": {
+          "description": "帯の上の文字（スライドタイトル、日付・会議名・ページ番号）。",
+          "x-contrast": { "against": "band", "kind": "text" },
+          "$ref": "#/$defs/role"
+        },
+        "category": {
+          "description": "帯の右上のカテゴリラベル。",
+          "x-contrast": { "against": "band", "kind": "text" },
+          "$ref": "#/$defs/role"
+        },
+        "emphasis": {
+          "description": "表紙タイトル、セクションタイトル、キーメッセージ、Takeaway。",
+          "x-contrast": { "against": "background", "kind": "text" },
+          "$ref": "#/$defs/role"
+        },
+        "accent": {
+          "description": "アクセントライン・縦バーなどの線や図形。",
+          "x-contrast": { "against": "background", "kind": "graphic" },
+          "$ref": "#/$defs/role"
+        },
+        "section-label": {
+          "description": "セクション扉の「01 / SECTION」。",
+          "x-contrast": { "against": "background", "kind": "text" },
+          "$ref": "#/$defs/role"
+        },
+        "rule": {
+          "description": "キーメッセージ下などの区切り線（装飾）。",
+          "x-contrast": { "against": "background", "kind": "decorative" },
+          "$ref": "#/$defs/role"
+        },
+        "placeholder-bg": {
+          "description": "図プレースホルダーの塗り。",
+          "x-contrast": { "kind": "surface" },
+          "$ref": "#/$defs/role"
+        },
+        "placeholder-border": {
+          "description": "図プレースホルダーの枠線（装飾）。",
+          "x-contrast": { "against": "placeholder-bg", "kind": "decorative" },
+          "$ref": "#/$defs/role"
+        },
+        "placeholder-text": {
+          "description": "図プレースホルダーの文字。",
+          "x-contrast": { "against": "placeholder-bg", "kind": "text" },
+          "$ref": "#/$defs/role"
+        }
+      }
+    },
+    "typography": {
+      "type": "object",
+      "required": ["latin", "east_asian", "fallbacks"],
+      "additionalProperties": false,
+      "properties": {
+        "latin": { "description": "欧文フォント。", "type": "string", "minLength": 1 },
+        "east_asian": { "description": "和文フォント。", "type": "string", "minLength": 1 },
+        "fallbacks": {
+          "type": "object",
+          "required": ["latin", "east_asian"],
+          "additionalProperties": false,
+          "properties": {
+            "latin": { "$ref": "#/$defs/fontList" },
+            "east_asian": { "$ref": "#/$defs/fontList" }
+          }
+        }
+      }
+    },
+    "chart": {
+      "type": "object",
+      "required": ["status", "series"],
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "description": "元資料に定義がない場合は provisional（暫定案・要確認）。",
+          "enum": ["provisional", "confirmed"]
+        },
+        "series": {
+          "description": "グラフの系列色の順番。palette の名前を参照する。",
+          "type": "array",
+          "items": { "$ref": "#/$defs/paletteName" }
+        }
+      }
+    },
+    "notes": {
+      "description": "注意事項。コントラスト基準未満の role は、その role 名をバッククォートで囲んで記載する。",
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    }
+  },
+  "$defs": {
+    "hex": {
+      "description": "#RRGGBB（大文字）。",
+      "type": "string",
+      "pattern": "^#[0-9A-F]{6}$"
+    },
+    "paletteName": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$"
+    },
+    "paletteEntry": {
+      "type": "object",
+      "required": ["hex"],
+      "additionalProperties": false,
+      "properties": {
+        "hex": { "$ref": "#/$defs/hex" },
+        "pptx_slot": {
+          "description": "PPTX テーマ配色（clrScheme）のスロット。スロット外の直接指定色には付けない。",
+          "enum": [
+            "dk1", "lt1", "dk2", "lt2",
+            "accent1", "accent2", "accent3", "accent4", "accent5", "accent6",
+            "hlink", "folHlink"
+          ]
+        },
+        "note": { "type": "string", "minLength": 1 }
+      }
+    },
+    "role": {
+      "type": "object",
+      "required": ["color", "usage"],
+      "additionalProperties": false,
+      "properties": {
+        "color": { "$ref": "#/$defs/paletteName" },
+        "usage": { "type": "string", "minLength": 1 }
+      }
+    },
+    "fontList": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    }
+  }
+}

@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="468" viewBox="0 0 720 468" font-family="Arial, Helvetica, sans-serif" role="img">
+  <title>01 Brown &amp; Orange — role swatches</title>
+  <rect width="720" height="468" fill="#FFFFFF"/>
+  <rect width="720" height="64" fill="#70372C"/>
+  <text x="24" y="41" font-size="22" fill="#F7E3AF" font-weight="bold">01  Brown &amp; Orange</text>
+  <text x="696" y="40" font-size="12" fill="#C4B2AB" font-weight="bold" text-anchor="end" letter-spacing="1">CATEGORY</text>
+  <rect x="24.5" y="84.5" width="47" height="27" rx="3" fill="#FFFFFF" stroke="#E2E1DD"/>
+  <text x="84" y="96" font-size="14" fill="#242424">background</text>
+  <text x="84" y="111" font-size="11" fill="#666666">#FFFFFF · white</text>
+  <rect x="24.5" y="124.5" width="47" height="27" rx="3" fill="#242424" stroke="#E2E1DD"/>
+  <text x="84" y="136" font-size="14" fill="#242424">text</text>
+  <text x="84" y="151" font-size="11" fill="#666666">#242424 · gray-900</text>
+  <rect x="24.5" y="164.5" width="47" height="27" rx="3" fill="#666666" stroke="#E2E1DD"/>
+  <text x="84" y="176" font-size="14" fill="#242424">text-secondary</text>
+  <text x="84" y="191" font-size="11" fill="#666666">#666666 · gray-600</text>
+  <rect x="24.5" y="204.5" width="47" height="27" rx="3" fill="#70372C" stroke="#E2E1DD"/>
+  <text x="84" y="216" font-size="14" fill="#242424">band</text>
+  <text x="84" y="231" font-size="11" fill="#666666">#70372C · brown-700</text>
+  <rect x="24.5" y="244.5" width="47" height="27" rx="3" fill="#F7E3AF" stroke="#E2E1DD"/>
+  <text x="84" y="256" font-size="14" fill="#242424">on-band</text>
+  <text x="84" y="271" font-size="11" fill="#666666">#F7E3AF · cream-100</text>
+  <rect x="24.5" y="284.5" width="47" height="27" rx="3" fill="#C4B2AB" stroke="#E2E1DD"/>
+  <text x="84" y="296" font-size="14" fill="#242424">category</text>
+  <text x="84" y="311" font-size="11" fill="#666666">#C4B2AB · taupe-300</text>
+  <rect x="24.5" y="324.5" width="47" height="27" rx="3" fill="#70372C" stroke="#E2E1DD"/>
+  <text x="84" y="336" font-size="14" fill="#242424">emphasis</text>
+  <text x="84" y="351" font-size="11" fill="#666666">#70372C · brown-700</text>
+  <rect x="360.5" y="84.5" width="47" height="27" rx="3" fill="#DC5F36" stroke="#E2E1DD"/>
+  <text x="420" y="96" font-size="14" fill="#242424">accent</text>
+  <text x="420" y="111" font-size="11" fill="#666666">#DC5F36 · orange-400</text>
+  <rect x="360.5" y="124.5" width="47" height="27" rx="3" fill="#DC5F36" stroke="#E2E1DD"/>
+  <text x="420" y="136" font-size="14" fill="#242424">section-label</text>
+  <text x="420" y="151" font-size="11" fill="#666666">#DC5F36 · orange-400</text>
+  <rect x="360.5" y="164.5" width="47" height="27" rx="3" fill="#F7E3AF" stroke="#E2E1DD"/>
+  <text x="420" y="176" font-size="14" fill="#242424">rule</text>
+  <text x="420" y="191" font-size="11" fill="#666666">#F7E3AF · cream-100</text>
+  <rect x="360.5" y="204.5" width="47" height="27" rx="3" fill="#F7F7F6" stroke="#E2E1DD"/>
+  <text x="420" y="216" font-size="14" fill="#242424">placeholder-bg</text>
+  <text x="420" y="231" font-size="11" fill="#666666">#F7F7F6 · warm-gray-50</text>
+  <rect x="360.5" y="244.5" width="47" height="27" rx="3" fill="#E2E1DD" stroke="#E2E1DD"/>
+  <text x="420" y="256" font-size="14" fill="#242424">placeholder-border</text>
+  <text x="420" y="271" font-size="11" fill="#666666">#E2E1DD · warm-gray-100</text>
+  <rect x="360.5" y="284.5" width="47" height="27" rx="3" fill="#777777" stroke="#E2E1DD"/>
+  <text x="420" y="296" font-size="14" fill="#242424">placeholder-text</text>
+  <text x="420" y="311" font-size="11" fill="#666666">#777777 · gray-500</text>
+  <text x="24" y="386" font-size="13" fill="#242424">chart.series (provisional)</text>
+  <rect x="24.5" y="396.5" width="83" height="27" rx="3" fill="#70372C" stroke="#E2E1DD"/>
+  <text x="24" y="438" font-size="11" fill="#666666">1. #70372C</text>
+  <rect x="120.5" y="396.5" width="83" height="27" rx="3" fill="#DC5F36" stroke="#E2E1DD"/>
+  <text x="120" y="438" font-size="11" fill="#666666">2. #DC5F36</text>
+  <rect x="216.5" y="396.5" width="83" height="27" rx="3" fill="#666666" stroke="#E2E1DD"/>
+  <text x="216" y="438" font-size="11" fill="#666666">3. #666666</text>
+  <rect x="312.5" y="396.5" width="83" height="27" rx="3" fill="#C4B2AB" stroke="#E2E1DD"/>
+  <text x="312" y="438" font-size="11" fill="#666666">4. #C4B2AB</text>
+  <rect x="0.5" y="0.5" width="719" height="467" fill="none" stroke="#E2E1DD"/>
+</svg>

@@ -1,0 +1,35 @@
+name: check
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.13"]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Check themes (schema, references, roles, numbering, contrast)
+        run: python scripts/check.py
+
+      - name: Verify dist/ and README.md match theme.json
+        run: |
+          python scripts/build.py
+          if [ -n "$(git status --porcelain)" ]; then
+            git status --porcelain
+            git --no-pager diff
+            echo "::error::dist/ または README.md が theme.json と一致しません。python scripts/build.py を実行して差分をコミットしてください。"
+            exit 1
+          fi
+
+      - name: Run tests
+        run: |
+          python -m pip install pytest
+          python -m pytest -q

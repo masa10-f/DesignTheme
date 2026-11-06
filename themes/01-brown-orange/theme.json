@@ -1,0 +1,62 @@
+{
+  "$schema": "../../schema/theme.schema.json",
+  "id": "01",
+  "slug": "brown-orange",
+  "name": "Brown & Orange",
+  "status": "active",
+  "source": "I-Lab Research Palette（研究ミーティング用PPTXテンプレートの前半）",
+  "palette": {
+    "gray-900": { "hex": "#242424", "pptx_slot": "dk1", "note": "本文テキスト" },
+    "white": { "hex": "#FFFFFF", "pptx_slot": "lt1", "note": "背景" },
+    "blue-800": { "hex": "#0E2841", "pptx_slot": "dk2", "note": "テンプレート内では未使用" },
+    "gray-100": { "hex": "#E8E8E8", "pptx_slot": "lt2", "note": "テンプレート内では未使用" },
+    "brown-700": { "hex": "#70372C", "pptx_slot": "accent1", "note": "茶（テーマ01の主色）" },
+    "orange-400": { "hex": "#DC5F36", "pptx_slot": "accent2", "note": "オレンジ（テーマ01のアクセント）" },
+    "cream-100": { "hex": "#F7E3AF", "pptx_slot": "accent3", "note": "クリーム（テーマ01の帯上の文字・区切り線）" },
+    "beige-100": { "hex": "#DCD5C8", "pptx_slot": "accent4", "note": "ベージュ（テーマ02の帯）" },
+    "cool-gray-300": { "hex": "#A2A2AD", "pptx_slot": "accent5", "note": "テンプレート内では未使用" },
+    "navy-800": { "hex": "#1F1E63", "pptx_slot": "accent6", "note": "ネイビー（テーマ02の主色）" },
+    "teal-500": { "hex": "#467886", "pptx_slot": "hlink", "note": "ハイパーリンク" },
+    "plum-500": { "hex": "#96607D", "pptx_slot": "folHlink", "note": "ハイパーリンク（表示済み）" },
+    "taupe-300": { "hex": "#C4B2AB", "note": "スロット外の直接指定。01のカテゴリラベル" },
+    "gray-600": { "hex": "#666666", "note": "スロット外の直接指定。参考文献・図キャプション" },
+    "warm-gray-50": { "hex": "#F7F7F6", "note": "スロット外の直接指定。図プレースホルダーの塗り" },
+    "warm-gray-100": { "hex": "#E2E1DD", "note": "スロット外の直接指定。図プレースホルダーの枠線" },
+    "gray-500": { "hex": "#777777", "note": "スロット外の直接指定。図プレースホルダーの文字" }
+  },
+  "roles": {
+    "background": { "color": "white", "usage": "スライド背景" },
+    "text": { "color": "gray-900", "usage": "本文" },
+    "text-secondary": { "color": "gray-600", "usage": "参考文献、図キャプション" },
+    "band": { "color": "brown-700", "usage": "ヘッダー帯・フッター帯の塗り" },
+    "on-band": { "color": "cream-100", "usage": "帯の上のスライドタイトル、日付・会議名・ページ番号" },
+    "category": { "color": "taupe-300", "usage": "帯の右上のカテゴリラベル（BACKGROUND など）" },
+    "emphasis": { "color": "brown-700", "usage": "表紙タイトル、セクションタイトル、キーメッセージ、Takeaway" },
+    "accent": { "color": "orange-400", "usage": "表紙のアクセントライン、セクション扉の縦バー" },
+    "section-label": { "color": "orange-400", "usage": "セクション扉の「01 / SECTION」" },
+    "rule": { "color": "cream-100", "usage": "キーメッセージ下の区切り線" },
+    "placeholder-bg": { "color": "warm-gray-50", "usage": "図プレースホルダーの塗り" },
+    "placeholder-border": { "color": "warm-gray-100", "usage": "図プレースホルダーの枠線" },
+    "placeholder-text": { "color": "gray-500", "usage": "図プレースホルダーの文字" }
+  },
+  "typography": {
+    "latin": "Arial",
+    "east_asian": "Meiryo UI",
+    "fallbacks": {
+      "latin": ["Helvetica", "sans-serif"],
+      "east_asian": ["Hiragino Sans", "Noto Sans JP", "sans-serif"]
+    }
+  },
+  "chart": {
+    "status": "provisional",
+    "series": ["brown-700", "orange-400", "gray-600", "taupe-300"]
+  },
+  "notes": [
+    "値は研究ミーティング用PPTXテンプレートから抽出。テーマ配色（clrScheme \"I-Lab Research Palette\"）は 01・02 共通のため、pptx_slot も 02 と同じ。",
+    "コントラスト警告: `section-label`（orange-400）は `background` に対して約 3.7:1。小さい文字の基準 4.5:1 を満たさない（18pt / 24px 以上の大きい文字なら基準 3:1 を満たす）。元資料の値のまま維持。",
+    "コントラスト注意: `accent`（orange-400）は `background` に対して約 3.7:1。線・図形の基準 3:1 は満たすが、小さい文字には使わない。",
+    "コントラスト警告: `placeholder-text`（gray-500）は `placeholder-bg`（warm-gray-50）に対して約 4.2:1。小さい文字の基準 4.5:1 を満たさない。元資料の値のまま維持。",
+    "chart.series は元資料に定義がないため、役割色から作った暫定案（要確認）。`taupe-300` は `background` に対して約 2.0:1 で、線・マーカーには不向き（棒・面の塗り向け）。",
+    "`rule` と `placeholder-border` は装飾として扱い、コントラスト基準の対象外とする（`rule` は `background` に対して約 1.3:1）。"
+  ]
+}
