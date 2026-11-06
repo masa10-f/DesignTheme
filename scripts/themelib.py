@@ -12,7 +12,7 @@ import math
 import re
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Callable, Dict, List, Optional, Tuple
 
 import colorlib as cl
 from colorlib import contrast_ratio, relative_luminance  # noqa: F401（他のスクリプトから tl.* で使う）
@@ -37,6 +37,15 @@ SERIES_MIN_DE = 10.0
 
 SEED_KEYS = ("base", "accent", "sub")
 SEED_JA = {"base": "ベース", "accent": "アクセント", "sub": "サブ"}
+
+# 種色の基準（docs/color-theory.md）。種色は主な用途で次を満たすこと。満たさなければ代わりの色を提案する。
+#   ベース: 帯の地。白か本文色（明度 TEXT_TONE）の文字に対して BAND_MIN 以上（WCAG 1.4.6 の 7:1）。
+#           帯には 2 種類の文字（on-band と category）を載せるので、4.5:1 より余裕を持たせる。
+#   アクセント: 線・図形。白地で 3:1 以上（WCAG 1.4.11）。
+#   サブ: 帯の上の文字。ベースに対して 4.5:1 以上（WCAG 1.4.3）。
+BAND_MIN = 7.0
+TEXT_TONE = 15
+WHITE = "#FFFFFF"
 
 GENERIC_FONT_FAMILIES = frozenset(
     {
@@ -353,6 +362,105 @@ def series_separation(theme: Theme) -> List[SeparationResult]:
         for j in range(i + 1, len(names)):
             value, vision = cl.min_delta_e(hexes[i], hexes[j])
             out.append(SeparationResult(i, j, names[i], names[j], hexes[i], hexes[j], value, vision))
+    return out
+
+
+@dataclass(frozen=True)
+class SeedCheck:
+    """種色 1 つの判定と、基準を満たさない場合の提案（同じ色相・彩度で明度だけを変えた色）。"""
+
+    key: str  # base / accent / sub
+    name: str
+    hex: str
+    ratio: float
+    minimum: float
+    against: str  # 何に対するコントラストか（説明）
+    proposal_tone: Optional[int] = None
+    proposal_hex: Optional[str] = None
+    proposal_ratio: Optional[float] = None
+
+    @property
+    def ok(self) -> bool:
+        return self.ratio >= self.minimum
+
+    def describe(self) -> str:
+        head = (
+            f"{SEED_JA[self.key]} `{self.name}`（{self.hex}）は{self.against}に対して {format_ratio(self.ratio)}"
+            f"（基準 {self.minimum:g}:1 以上）"
+        )
+        if self.ok:
+            return head
+        if self.proposal_hex is None:
+            return head + "。同じ色相では基準を満たす明度がない"
+        return (
+            f"{head}。提案: 同じ色相で明度 {self.proposal_tone} の {self.proposal_hex}"
+            f"（{format_ratio(self.proposal_ratio or 0)}）"
+        )
+
+
+def _base_ratio(hex_color: str) -> float:
+    """帯に載せられる最良の文字（白か、明度 TEXT_TONE の本文色）とのコントラスト。"""
+    y = cl.relative_luminance(hex_color)
+    y_text = cl.tone_to_luminance(TEXT_TONE)
+    on_white = 1.05 / (y + 0.05)
+    with_text = (max(y, y_text) + 0.05) / (min(y, y_text) + 0.05)
+    return max(on_white, with_text)
+
+
+def nearest_tone(
+    hex_color: str, ok: Callable[[str], bool], prefer: Optional[Callable[[str], bool]] = None
+) -> Optional[Tuple[int, str]]:
+    """hex_color の色相・彩度のまま、ok を満たす整数の明度のうち、元の明度に最も近いもの（同じ距離なら暗い方）。
+
+    prefer があれば、それも満たす明度を優先する（なければ ok だけで選ぶ）。
+    """
+    _, chroma, hue = cl.oklch(hex_color)
+    t0 = cl.round_half_up(cl.tone(hex_color))
+    candidates = []
+    for t in range(0, 101):
+        candidate = cl.at_tone(hue, chroma, float(t))
+        if candidate != hex_color and ok(candidate):
+            preferred = prefer(candidate) if prefer is not None else True
+            candidates.append((not preferred, abs(t - t0), t, candidate))
+    if not candidates:
+        return None
+    _, _, t, candidate = min(candidates)
+    return t, candidate
+
+
+def seed_checks(names: Dict[str, str], hexes: Dict[str, str]) -> List[SeedCheck]:
+    """種色 3 つ（種類 → palette 名 / hex）の判定と提案。
+
+    ベースの提案は、サブが帯の上で読める側（サブが明るければ暗い側）を優先する。
+    サブはベースに対して判定する。ベースに提案があるときは、提案のベースに対して判定する。
+    """
+    sub = hexes["sub"]
+    out: List[SeedCheck] = []
+
+    def add(key: str, fn: Callable[[str], float], minimum: float, against: str, prefer=None) -> SeedCheck:
+        ratio = fn(hexes[key])
+        found = None if ratio >= minimum else nearest_tone(hexes[key], lambda h: fn(h) >= minimum, prefer)
+        check = SeedCheck(
+            key, names[key], hexes[key], ratio, minimum, against,
+            found[0] if found else None, found[1] if found else None, fn(found[1]) if found else None,
+        )
+        out.append(check)
+        return check
+
+    base = add("base", _base_ratio, BAND_MIN, "白か本文色の文字", lambda h: cl.contrast_ratio(sub, h) >= TEXT_MIN)
+    add("accent", lambda h: cl.contrast_ratio(h, WHITE), GRAPHIC_MIN, "白地")
+    band = base.proposal_hex if not base.ok and base.proposal_hex else base.hex
+    add("sub", lambda h: cl.contrast_ratio(h, band), TEXT_MIN, "提案のベース（帯）" if band != base.hex else "ベース（帯）")
+    return out
+
+
+def seed_separation(hexes: Dict[str, str]) -> List[Tuple[str, str, float, str]]:
+    """種色どうしの最小の色差（一般色覚と色覚シミュレーション）。(種類, 種類, ΔE00, 見え方)。"""
+    out = []
+    for i, a in enumerate(SEED_KEYS):
+        for b in SEED_KEYS[i + 1 :]:
+            value, vision = cl.min_delta_e(hexes[a], hexes[b])
+            out.append((a, b, value, vision))
     return out
 
 

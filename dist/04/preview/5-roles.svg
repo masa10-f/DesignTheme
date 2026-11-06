@@ -11,9 +11,9 @@
   <rect x="780" y="156" width="64" height="64" fill="#3C7D9B" stroke="#CFCFCF" stroke-width="2" rx="8"/>
   <text x="860" y="180" font-size="26" fill="#242629" font-weight="bold">Accent  teal-49</text>
   <text x="860" y="212" font-size="24" fill="#5C5F62">#3C7D9B · on white 4.56:1 text OK</text>
-  <rect x="1300" y="156" width="64" height="64" fill="#5B9F8A" stroke="#CFCFCF" stroke-width="2" rx="8"/>
-  <text x="1380" y="180" font-size="26" fill="#242629" font-weight="bold">Sub  sea-green-61</text>
-  <text x="1380" y="212" font-size="24" fill="#5C5F62">#5B9F8A · on white 3.10:1 lines only</text>
+  <rect x="1300" y="156" width="64" height="64" fill="#7CC1AB" stroke="#CFCFCF" stroke-width="2" rx="8"/>
+  <text x="1380" y="180" font-size="26" fill="#242629" font-weight="bold">Sub  sea-green-73</text>
+  <text x="1380" y="212" font-size="24" fill="#5C5F62">#7CC1AB · on white 2.08:1 not on white</text>
   <rect x="128" y="268" width="64" height="64" fill="#FFFFFF" stroke="#CFCFCF" stroke-width="2" rx="8"/>
   <text x="212" y="294" font-size="28" fill="#242629" font-weight="bold" font-family="'Courier New', Courier, monospace">background</text>
   <text x="212" y="328" font-size="24" fill="#5C5F62">white · #FFFFFF</text>
@@ -57,10 +57,10 @@
   <text x="1076" y="428" font-size="24" fill="#5C5F62">teal-49 · #3C7D9B</text>
   <text x="1432" y="396" font-size="26" fill="#242629">4.56:1 OK</text>
   <text x="1432" y="428" font-size="24" fill="#5C5F62">vs background</text>
-  <rect x="992" y="468" width="64" height="64" fill="#5B9F8A" stroke="#CFCFCF" stroke-width="2" rx="8"/>
+  <rect x="992" y="468" width="64" height="64" fill="#7CC1AB" stroke="#CFCFCF" stroke-width="2" rx="8"/>
   <text x="1076" y="494" font-size="28" fill="#242629" font-weight="bold" font-family="'Courier New', Courier, monospace">rule</text>
-  <text x="1076" y="528" font-size="24" fill="#5C5F62">sea-green-61 · #5B9F8A</text>
-  <text x="1432" y="496" font-size="26" fill="#242629">3.10:1 decorative</text>
+  <text x="1076" y="528" font-size="24" fill="#5C5F62">sea-green-73 · #7CC1AB</text>
+  <text x="1432" y="496" font-size="26" fill="#242629">2.08:1 decorative</text>
   <text x="1432" y="528" font-size="24" fill="#5C5F62">vs background</text>
   <rect x="992" y="568" width="64" height="64" fill="#F4F7FA" stroke="#CFCFCF" stroke-width="2" rx="8"/>
   <text x="1076" y="594" font-size="28" fill="#242629" font-weight="bold" font-family="'Courier New', Courier, monospace">placeholder-bg</text>

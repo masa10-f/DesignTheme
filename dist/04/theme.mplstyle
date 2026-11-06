@@ -3,7 +3,7 @@
 # Colors: roles text / text-secondary / background. Color cycle: chart.series
 # chart.series status: provisional (tentative proposal, needs review)
 
-axes.prop_cycle: cycler('color', ['34485E', '3C7D9B', '5B9F8A', 'B87252', '505700', '843B44'])
+axes.prop_cycle: cycler('color', ['34485E', '3C7D9B', '5CA08B', 'B87252', '505700', '843B44'])
 
 figure.facecolor: FFFFFF
 axes.facecolor: FFFFFF

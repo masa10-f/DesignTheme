@@ -577,19 +577,31 @@ def _seed_rows(theme: tl.Theme) -> List[str]:
         uses.setdefault(spec["color"], []).append(f"`{role}`")
     for i, n in enumerate(theme.series_names):
         uses.setdefault(n, []).append(f"系列 {i + 1}")
+    checks = {c.key: c for c in tl.seed_checks(theme.seeds, {k: palette[n] for k, n in theme.seeds.items()})}
     rows = [
-        "| 種色 | palette | hex | 明度 L* | 白地（`background`） | 帯（`band`）の上 | そのまま使う場所 |",
-        "|---|---|---|---|---|---|---|",
+        "| 種色 | palette | hex | 明度 L* | 種色の基準 | 白地（`background`） | 帯（`band`）の上 | そのまま使う場所 |",
+        "|---|---|---|---|---|---|---|---|",
     ]
     for key in tl.SEED_KEYS:
         n = theme.seeds[key]
         h = palette[n]
         on_band = "—" if theme.roles["band"]["color"] == n else _seed_ratio(cl.contrast_ratio(h, band))
         rows.append(
-            f"| {tl.SEED_JA[key]} | `{n}` | `{h}` | {cl.tone(h):.1f} | {_seed_ratio(cl.contrast_ratio(h, '#FFFFFF'))} "
-            f"| {on_band} | {'、'.join(uses.get(n, [])) or '—'} |"
+            f"| {tl.SEED_JA[key]} | `{n}` | `{h}` | {cl.tone(h):.1f} | {_seed_criterion(checks[key])} "
+            f"| {_seed_ratio(cl.contrast_ratio(h, '#FFFFFF'))} | {on_band} | {'、'.join(uses.get(n, [])) or '—'} |"
         )
     return rows
+
+
+def _seed_criterion(check: tl.SeedCheck) -> str:
+    """種色の基準（docs/color-theory.md）の判定。満たさなければ提案の色も示す。"""
+    target = {"base": "白か本文色の文字に", "accent": "白地で", "sub": "帯の上で"}[check.key]
+    head = f"{target} {check.minimum:g}:1 以上"
+    if check.ok:
+        return f"✓ {head}"
+    if check.proposal_hex is None:
+        return f"⚠ {head}（{tl.format_ratio(check.ratio)}）"
+    return f"⚠ {head}（{tl.format_ratio(check.ratio)}）。提案 `{check.proposal_hex}`（明度 {check.proposal_tone}）"
 
 
 def render_readme_section(themes: List[tl.Theme], specs: Dict[str, tl.RoleSpec], root: Path) -> str:
@@ -627,7 +639,7 @@ def render_readme_section(themes: List[tl.Theme], specs: Dict[str, tl.RoleSpec],
             f"和文 {typo['east_asian']}（代替: {', '.join(typo['fallbacks']['east_asian'])}）",
             f"- 使い方のルール: [{d}/README.md]({d}/README.md) ・ 正本: [{d}/theme.json]({d}/theme.json) ・ 生成物: [dist/{t.id}/](dist/{t.id}/)",
             "",
-            "**種色**（値は変えない。白地・帯の上で基準に届かない種色は、その用途にだけ明度を変えた色を使う）",
+            "**種色**（値は変えない。基準に届かない種色には提案の色を示す。採らない場合は、文字に使う用途にだけ明度を変えた色を使う）",
             "",
             *_seed_rows(t),
             "",

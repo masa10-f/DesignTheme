@@ -200,9 +200,12 @@ def test_readme_lists_themes_with_swatches_roles_and_warnings():
             assert f"| {tl.SEED_JA[key]} | `{theme.seeds[key]}` |" in section
     assert "暫定案・要確認" in section
     assert "`accent`（orange-56 #DC5F36）on `background`（#FFFFFF）= 3.66:1" in section
-    assert "`accent`（cool-gray-67 #A2A2AD）on `background`（#FFFFFF）= 2.52:1" in section
+    assert "`accent`（cool-gray-61 #92929D）on `background`（#FFFFFF）= 3.07:1" in section
     assert "| `section-label` | `orange-49` | `#C84C22` | `orange-56` の色相・明度 49 |" in section
     assert "系列色どうしの最小の色差" in section
+    # 種色の基準（すべて満たす）
+    assert "| アクセント | `cool-gray-61` | `#92929D` | 60.9 | ✓ 白地で 3:1 以上 |" in section
+    assert "| サブ | `sea-green-73` | `#7CC1AB` | 73.1 | ✓ 帯の上で 4.5:1 以上 |" in section
 
 
 @pytest.mark.parametrize("theme", THEMES, ids=lambda t: t.id)

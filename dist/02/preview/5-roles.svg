@@ -8,9 +8,9 @@
   <rect x="260" y="156" width="64" height="64" fill="#DCD5C8" stroke="#CFCFCF" stroke-width="2" rx="8"/>
   <text x="340" y="180" font-size="26" fill="#272623" font-weight="bold">Base  beige-85</text>
   <text x="340" y="212" font-size="24" fill="#605E5B">#DCD5C8 · on white 1.45:1 not on white</text>
-  <rect x="780" y="156" width="64" height="64" fill="#A2A2AD" stroke="#CFCFCF" stroke-width="2" rx="8"/>
-  <text x="860" y="180" font-size="26" fill="#272623" font-weight="bold">Accent  cool-gray-67</text>
-  <text x="860" y="212" font-size="24" fill="#605E5B">#A2A2AD · on white 2.52:1 not on white</text>
+  <rect x="780" y="156" width="64" height="64" fill="#92929D" stroke="#CFCFCF" stroke-width="2" rx="8"/>
+  <text x="860" y="180" font-size="26" fill="#272623" font-weight="bold">Accent  cool-gray-61</text>
+  <text x="860" y="212" font-size="24" fill="#605E5B">#92929D · on white 3.07:1 lines only</text>
   <rect x="1300" y="156" width="64" height="64" fill="#1F1E63" stroke="#CFCFCF" stroke-width="2" rx="8"/>
   <text x="1380" y="180" font-size="26" fill="#272623" font-weight="bold">Sub  navy-16</text>
   <text x="1380" y="212" font-size="24" fill="#605E5B">#1F1E63 · on white 14.74:1 text OK</text>
@@ -47,10 +47,10 @@
   <text x="212" y="928" font-size="24" fill="#605E5B">navy-16 · #1F1E63</text>
   <text x="568" y="896" font-size="26" fill="#272623">14.74:1 OK</text>
   <text x="568" y="928" font-size="24" fill="#605E5B">vs background</text>
-  <rect x="992" y="268" width="64" height="64" fill="#A2A2AD" stroke="#CFCFCF" stroke-width="2" rx="8"/>
+  <rect x="992" y="268" width="64" height="64" fill="#92929D" stroke="#CFCFCF" stroke-width="2" rx="8"/>
   <text x="1076" y="294" font-size="28" fill="#272623" font-weight="bold" font-family="'Courier New', Courier, monospace">accent</text>
-  <text x="1076" y="328" font-size="24" fill="#605E5B">cool-gray-67 · #A2A2AD</text>
-  <text x="1432" y="296" font-size="26" fill="#272623">2.52:1 below threshold</text>
+  <text x="1076" y="328" font-size="24" fill="#605E5B">cool-gray-61 · #92929D</text>
+  <text x="1432" y="296" font-size="26" fill="#272623">3.07:1 lines only</text>
   <text x="1432" y="328" font-size="24" fill="#605E5B">vs background</text>
   <rect x="992" y="368" width="64" height="64" fill="#74747E" stroke="#CFCFCF" stroke-width="2" rx="8"/>
   <text x="1076" y="394" font-size="28" fill="#272623" font-weight="bold" font-family="'Courier New', Courier, monospace">section-label</text>

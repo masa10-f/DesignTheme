@@ -25,9 +25,9 @@
   <rect x="24.5" y="324.5" width="47" height="27" rx="3" fill="#1F1E63" stroke="#DFDCD8"/>
   <text x="84" y="336" font-size="14" fill="#272623">emphasis</text>
   <text x="84" y="351" font-size="11" fill="#605E5B">#1F1E63 · navy-16</text>
-  <rect x="360.5" y="84.5" width="47" height="27" rx="3" fill="#A2A2AD" stroke="#DFDCD8"/>
+  <rect x="360.5" y="84.5" width="47" height="27" rx="3" fill="#92929D" stroke="#DFDCD8"/>
   <text x="420" y="96" font-size="14" fill="#272623">accent</text>
-  <text x="420" y="111" font-size="11" fill="#605E5B">#A2A2AD · cool-gray-67</text>
+  <text x="420" y="111" font-size="11" fill="#605E5B">#92929D · cool-gray-61</text>
   <rect x="360.5" y="124.5" width="47" height="27" rx="3" fill="#74747E" stroke="#DFDCD8"/>
   <text x="420" y="136" font-size="14" fill="#272623">section-label</text>
   <text x="420" y="151" font-size="11" fill="#605E5B">#74747E · cool-gray-49</text>

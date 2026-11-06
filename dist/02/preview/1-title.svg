@@ -14,7 +14,7 @@
   <text x="142" y="288" font-size="24" fill="#111111" font-weight="bold" font-family="'Courier New', Courier, monospace">emphasis</text>
   <text x="128" y="398" font-size="96" fill="#1F1E63" font-weight="bold">Seed-based Color Themes</text>
   <text x="128" y="504" font-size="96" fill="#1F1E63" font-weight="bold">for Research Slides</text>
-  <rect x="128" y="560" width="420" height="12" fill="#A2A2AD"/>
+  <rect x="128" y="560" width="420" height="12" fill="#92929D"/>
   <rect x="576" y="548" width="115" height="36" rx="8" fill="#FFFFFF" stroke="#111111" stroke-width="2" stroke-dasharray="6 4"/>
   <text x="590" y="574" font-size="24" fill="#111111" font-weight="bold" font-family="'Courier New', Courier, monospace">accent</text>
   <text x="128" y="656" font-size="40" fill="#272623">[Author Name] · [Affiliation]</text>

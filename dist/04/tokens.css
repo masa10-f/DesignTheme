@@ -11,28 +11,28 @@
   --color-emphasis: #34485E;
   --color-accent: #3C7D9B;
   --color-section-label: #3C7D9B;
-  --color-rule: #5B9F8A;
+  --color-rule: #7CC1AB;
   --color-placeholder-bg: #F4F7FA;
   --color-placeholder-border: #DADDE1;
   --color-placeholder-text: #5C5F62;
   /* chart.series (provisional: 暫定案・要確認) */
   --chart-series-1: #34485E;
   --chart-series-2: #3C7D9B;
-  --chart-series-3: #5B9F8A;
+  --chart-series-3: #5CA08B;
   --chart-series-4: #B87252;
   --chart-series-5: #505700;
   --chart-series-6: #843B44;
   /* palette: 生の色（直接使わず roles を使う） */
   --palette-slate-30: #34485E;
   --palette-teal-49: #3C7D9B;
-  --palette-sea-green-61: #5B9F8A;
+  --palette-sea-green-73: #7CC1AB;
   --palette-white: #FFFFFF;
   --palette-neutral-15: #242629;
   --palette-neutral-40: #5C5F62;
   --palette-neutral-88: #DADDE1;
   --palette-neutral-97: #F4F7FA;
-  --palette-sea-green-73: #7CC1AB;
   --palette-slate-73: #9EB6D0;
+  --palette-sea-green-61: #5CA08B;
   --palette-orange-55: #B87252;
   --palette-olive-35: #505700;
   --palette-red-35: #843B44;

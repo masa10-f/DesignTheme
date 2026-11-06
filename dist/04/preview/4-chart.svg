@@ -16,11 +16,11 @@
   <circle cx="464" cy="589" r="9" fill="#3C7D9B"/>
   <circle cx="740" cy="590" r="9" fill="#3C7D9B"/>
   <circle cx="1016" cy="514" r="9" fill="#3C7D9B"/>
-  <polyline points="188,467 280,508 372,553 464,576 556,562 648,521 740,477 832,456 924,472 1016,515" fill="none" stroke="#5B9F8A" stroke-width="6" stroke-linejoin="round"/>
-  <circle cx="188" cy="467" r="9" fill="#5B9F8A"/>
-  <circle cx="464" cy="576" r="9" fill="#5B9F8A"/>
-  <circle cx="740" cy="477" r="9" fill="#5B9F8A"/>
-  <circle cx="1016" cy="515" r="9" fill="#5B9F8A"/>
+  <polyline points="188,467 280,508 372,553 464,576 556,562 648,521 740,477 832,456 924,472 1016,515" fill="none" stroke="#5CA08B" stroke-width="6" stroke-linejoin="round"/>
+  <circle cx="188" cy="467" r="9" fill="#5CA08B"/>
+  <circle cx="464" cy="576" r="9" fill="#5CA08B"/>
+  <circle cx="740" cy="477" r="9" fill="#5CA08B"/>
+  <circle cx="1016" cy="515" r="9" fill="#5CA08B"/>
   <polyline points="188,473 280,513 372,523 464,497 556,451 648,413 740,406 832,434 924,480 1016,517" fill="none" stroke="#B87252" stroke-width="6" stroke-linejoin="round"/>
   <circle cx="188" cy="473" r="9" fill="#B87252"/>
   <circle cx="464" cy="497" r="9" fill="#B87252"/>
@@ -38,7 +38,7 @@
   <circle cx="1016" cy="352" r="9" fill="#843B44"/>
   <rect x="1282" y="310" width="64" height="380" fill="#34485E"/>
   <rect x="1366" y="390" width="64" height="300" fill="#3C7D9B"/>
-  <rect x="1450" y="350" width="64" height="340" fill="#5B9F8A"/>
+  <rect x="1450" y="350" width="64" height="340" fill="#5CA08B"/>
   <rect x="1534" y="440" width="64" height="250" fill="#B87252"/>
   <rect x="1618" y="400" width="64" height="290" fill="#505700"/>
   <rect x="1702" y="480" width="64" height="210" fill="#843B44"/>
@@ -57,9 +57,9 @@
   <rect x="404" y="790" width="40" height="40" fill="#3C7D9B" rx="6"/>
   <text x="456" y="810" font-size="26" fill="#242629" font-weight="bold">2  teal-49</text>
   <text x="456" y="842" font-size="24" fill="#5C5F62">#3C7D9B</text>
-  <rect x="680" y="790" width="40" height="40" fill="#5B9F8A" rx="6"/>
+  <rect x="680" y="790" width="40" height="40" fill="#5CA08B" rx="6"/>
   <text x="732" y="810" font-size="26" fill="#242629" font-weight="bold">3  sea-green-61</text>
-  <text x="732" y="842" font-size="24" fill="#5C5F62">#5B9F8A</text>
+  <text x="732" y="842" font-size="24" fill="#5C5F62">#5CA08B</text>
   <rect x="956" y="790" width="40" height="40" fill="#B87252" rx="6"/>
   <text x="1008" y="810" font-size="26" fill="#242629" font-weight="bold">4  orange-55</text>
   <text x="1008" y="842" font-size="24" fill="#5C5F62">#B87252</text>
@@ -69,7 +69,7 @@
   <rect x="1508" y="790" width="40" height="40" fill="#843B44" rx="6"/>
   <text x="1560" y="810" font-size="26" fill="#242629" font-weight="bold">6  red-35</text>
   <text x="1560" y="842" font-size="24" fill="#5C5F62">#843B44</text>
-  <text x="128" y="906" font-size="26" fill="#5C5F62">chart.series (provisional) — smallest difference ΔE00 10.3 (tritan, 2 vs 3)</text>
+  <text x="128" y="906" font-size="26" fill="#5C5F62">chart.series (provisional) — smallest difference ΔE00 10.6 (tritan, 2 vs 3)</text>
   <rect x="0" y="1000" width="1920" height="80" fill="#34485E"/>
   <text x="128" y="1050" font-size="28" fill="#7CC1AB">[Date] · Group meeting</text>
   <text x="1792" y="1050" font-size="28" fill="#7CC1AB" font-weight="bold" text-anchor="end">4</text>

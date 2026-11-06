@@ -38,11 +38,14 @@ Python 3.10 以上、標準ライブラリのみ（pytest はテスト用）。�
 
 ## 新しいテーマを追加する手順
 
-1. 次の空き番号 `NN` を決め、種色 3 つを用意する（色を推測で決めない。ユーザーに確認する）。
-2. `python scripts/derive.py NN <slug> --name "<表示名>" --base … --accent … --sub …` で `themes/NN-<slug>/theme.json` を作る。表示される「種色」の判定（白地・帯の上で文字や線に使えるか）と警告をユーザーに報告する。
-3. derive.py が作った `themes/NN-<slug>/README.md` のひな形の TODO を埋め、どの役割にどの色を使うかのルールを書く（hex は書かない。プレビュー区間は残す）。
-4. `python scripts/check.py && python scripts/build.py` を実行する。
-5. `python -m pytest` を通してからコミットする。
+理論・手順・数値の根拠は [docs/color-theory.md](docs/color-theory.md)。種色 3 つはユーザーが与える。
+
+1. 次の空き番号 `NN` を決め、ユーザーから種色 3 つ（ベース・アクセント・サブ）とテーマの名前を受け取る。色を推測で決めない。
+2. `python scripts/derive.py NN <slug> --name "<表示名>" --base … --accent … --sub … --dry-run` で種色を判定する。
+3. **基準を満たさない種色があれば、表示された提案（同じ色相で明度を変えた色）をユーザーに示し、採るかどうか決めてもらう。** 提案を採るなら表示されたコマンドで、そのまま使うなら `--keep-seeds` を付けて実行する（ユーザーが決めていないのに `--keep-seeds` を付けない）。
+4. derive.py が作った `themes/NN-<slug>/README.md` のひな形の TODO を埋め、どの役割にどの色を使うかのルールを書く（hex は書かない。プレビュー区間は残す）。
+5. `python scripts/check.py && python scripts/build.py` を実行し、プレビュー（テーマの README）を確認する。帯の上の文字とカテゴリラベル、系列色が見分けられるかを見て、警告とあわせてユーザーに報告する。
+6. `python -m pytest` を通してからコミットする。
 
 ## 元資料との照合
 

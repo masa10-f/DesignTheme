@@ -43,7 +43,7 @@ def test_known_contrast_warnings_are_reported():
 
     # 種色のまま使う accent だけが基準に届かない（文字用の role は明度を変えた色で基準を満たす）
     assert has("01-brown-orange", "`accent`", "#DC5F36", "3:1 は満たす", "小さい文字には使えない")
-    assert has("02-beige-navy", "`accent`", "#A2A2AD", "2.52:1", "3:1 未満")
+    assert has("02-beige-navy", "`accent`", "#92929D", "3.07:1", "3:1 は満たす")
     assert len(messages) == 2
     # すべて notes に記載済み
     assert not any("notes に" in m for m in messages)

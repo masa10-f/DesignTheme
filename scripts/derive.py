@@ -5,7 +5,14 @@
   python scripts/derive.py 03 navy-red --name "Navy & Red" \\
       --base navy=#303967 --accent red=#E60012 --sub yellow=#FFE200
   python scripts/derive.py 01 --force       # 既存の theme.json の種色から作り直す
-  python scripts/derive.py ... --dry-run    # 書き込まずに結果だけ表示する
+  python scripts/derive.py ... --dry-run    # 書き込まずに結果だけ表示する（種色の判定と提案も出る）
+  python scripts/derive.py ... --keep-seeds # 基準を満たさない種色を、提案を採らずにそのまま使う
+
+手順の説明と根拠は docs/color-theory.md。
+
+0. 種色の判定（themelib.seed_checks）: ベースは白か本文色の文字に 7:1 以上、アクセントは白地で 3:1 以上、
+   サブはベースに 4.5:1 以上。満たさない種色があると、同じ色相で明度だけを変えた代わりの色を提案して止まる
+   （提案の色で実行し直すか、そのまま使うなら --keep-seeds）。既存の theme.json から読んだ種色は採用済みとみなす。
 
 種色はそのまま palette に入れ、値を変えない。それ以外の色は次の手順で機械的に作り、
 palette の "derived" に由来（色相・彩度・明度）を残す（check.py が再計算して一致を確かめる）。
@@ -317,6 +324,9 @@ def derive_theme(
 
     # ---- 警告を notes に（種色の値は変えない）
     theme = tl.Theme(root / tl.THEMES_DIRNAME / f"{theme_id}-{slug}" / "theme.json", data)
+    for check in seed_checks(seeds):
+        if not check.ok:
+            notes.append(f"種色の判定: {check.describe()}。提案を採らず、種色のまま使う。")
     for result in tl.contrast_results(theme, specs):
         if result.is_warning:
             notes.append(f"コントラスト警告: {result.describe()}。種色の値のまま使う。")
@@ -343,14 +353,49 @@ def _slots_by_hex(existing: Optional[Dict[str, Any]]) -> Dict[str, str]:
     return slots
 
 
+def seed_checks(seeds: Dict[str, Seed]) -> List[tl.SeedCheck]:
+    return tl.seed_checks({k: s.name for k, s in seeds.items()}, {k: s.hex for k, s in seeds.items()})
+
+
+def proposed_seeds(seeds: Dict[str, Seed]) -> Dict[str, Seed]:
+    """基準を満たさない種色を、提案の色に置き換えた 3 色。"""
+    out = dict(seeds)
+    for check in seed_checks(seeds):
+        if not check.ok and check.proposal_hex is not None:
+            out[check.key] = Seed(check.key, seeds[check.key].word, check.proposal_hex)
+    return out
+
+
+def command_line(theme_id: str, slug: str, name: str, seeds: Dict[str, Seed]) -> str:
+    args = " ".join(f"--{k} {seeds[k].word}={seeds[k].hex}" for k in tl.SEED_KEYS)
+    return f'python scripts/derive.py {theme_id} {slug} --name "{name}" {args}'
+
+
+def seed_report(theme_id: str, slug: str, name: str, seeds: Dict[str, Seed]) -> List[str]:
+    """種色の判定、提案、種色どうしの色差。"""
+    checks = seed_checks(seeds)
+    lines = ["種色の判定:"]
+    for check in checks:
+        lines.append(f"  {'✓' if check.ok else '⚠'} {check.describe()}")
+    for a, b, value, vision in tl.seed_separation({k: s.hex for k, s in seeds.items()}):
+        if value < tl.SERIES_MIN_DE:
+            lines.append(
+                f"  ⚠ {tl.SEED_JA[a]}と{tl.SEED_JA[b]}の色差 ΔE00 {value:.1f}（{cl.VISION_JA[vision]}）。"
+                f"目安 {tl.SERIES_MIN_DE:g} 未満で見分けにくい（色相か明度を離すとよい）"
+            )
+    if any(not c.ok for c in checks):
+        lines += [
+            "",
+            "提案の色で作るには（サブは提案のベースに対して判定済み。色を手で変えたら --dry-run で確かめ直す）:",
+            "  " + command_line(theme_id, slug, name, proposed_seeds(seeds)),
+            "種色をそのまま使うなら --keep-seeds を付ける。",
+        ]
+    return lines
+
+
 def _report(theme: tl.Theme, seeds: Dict[str, Seed], specs: Dict[str, tl.RoleSpec]) -> List[str]:
-    band = theme.role_hex()["band"]
-    lines = [f"テーマ {theme.id} {theme.name}", "", "種色:"]
-    for seed in seeds.values():
-        on_white = cl.contrast_ratio(seed.hex, WHITE)
-        verdict = "文字・線とも可" if on_white >= tl.TEXT_MIN else ("線・図形のみ可" if on_white >= tl.GRAPHIC_MIN else "文字・線とも不可")
-        extra = "" if seed.key == "base" else f"、帯の上 {tl.format_ratio(cl.contrast_ratio(seed.hex, band))}"
-        lines.append(f"  {tl.SEED_JA[seed.key]:6} {seed.name:16} {seed.hex}  明度 {seed.tone:5.1f}  白地 {tl.format_ratio(on_white)}（{verdict}）{extra}")
+    lines = [f"テーマ {theme.id} {theme.name}", ""]
+    lines += seed_report(theme.id, theme.slug, theme.name, seeds)
     lines += ["", "roles:"]
     hexes = theme.role_hex()
     for role, spec in theme.roles.items():
@@ -361,6 +406,13 @@ def _report(theme: tl.Theme, seeds: Dict[str, Seed], specs: Dict[str, tl.RoleSpe
     if worst is not None:
         lines.append(f"  最小の色差: ΔE00 {worst.delta_e:.1f}（{cl.VISION_JA[worst.vision]}、{worst.i + 1} と {worst.j + 1}）")
     warnings = [n for n in theme.data["notes"] if n.startswith(("コントラスト警告", "色差の警告"))]
+    value, vision = cl.min_delta_e(hexes["on-band"], hexes["category"])
+    if value < tl.SERIES_MIN_DE:
+        warnings.append(
+            f"帯の上の文字（`on-band` {hexes['on-band']}）とカテゴリラベル（`category` {hexes['category']}）の色差 "
+            f"ΔE00 {value:.1f}（{cl.VISION_JA[vision]}）。目安 {tl.SERIES_MIN_DE:g} 未満で見分けにくい。"
+            "サブとベースの色相か明度を離すとよい"
+        )
     lines += ["", "警告:"] + ([f"  {w}" for w in warnings] or ["  なし"])
     return lines
 
@@ -438,6 +490,9 @@ def main(argv: Optional[List[str]] = None) -> int:
     parser.add_argument("--source", help="出典（theme.json の source）")
     parser.add_argument("--force", action="store_true", help="既存の theme.json を上書きする")
     parser.add_argument("--dry-run", action="store_true", help="書き込まずに結果だけ表示する")
+    parser.add_argument(
+        "--keep-seeds", action="store_true", help="基準を満たさない種色を、提案を採らずにそのまま使う（ユーザーが決めた場合だけ）"
+    )
     parser.add_argument("--root", type=Path, default=tl.ROOT, help=argparse.SUPPRESS)
     args = parser.parse_args(argv)
     root = args.root.resolve()
@@ -470,6 +525,16 @@ def main(argv: Optional[List[str]] = None) -> int:
         name = args.name or (existing or {}).get("name")
         if not name:
             raise DeriveError("--name を指定してください（例: 'Navy & Red'）")
+
+        # 新しく指定された種色が基準を満たさなければ、提案を示して止まる（既存テーマの種色は採用済み）
+        new_seeds = any(getattr(args, key) for key in tl.SEED_KEYS)
+        failing = [c for c in seed_checks(seeds) if not c.ok]
+        if new_seeds and failing and not args.keep_seeds and not args.dry_run:
+            print("\n".join(seed_report(theme_id, slug, name, seeds)))
+            raise DeriveError(
+                "基準を満たさない種色があるため、書き込みませんでした。提案をユーザーに示して決めてもらい、"
+                "提案の色で実行し直すか、そのまま使うなら --keep-seeds を付けて実行してください"
+            )
 
         data, report = derive_theme(theme_id, slug, name, seeds, root, args.source, existing)
     except (DeriveError, OSError, ValueError, KeyError) as e:

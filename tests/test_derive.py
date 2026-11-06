@@ -86,7 +86,7 @@ def load(root: Path, dirname: str) -> dict:
 
 
 def test_derived_theme_passes_check_and_is_reproducible(repo_copy: Path):
-    args = ["05", "olive-plum", "--name", "Olive & Plum", "--base", "olive=#556B2F", "--accent", "plum=#8E4585", "--sub", "sand=#E6D3A3"]
+    args = ["05", "olive-plum", "--name", "Olive & Plum", "--base", "olive=#3E4F22", "--accent", "plum=#8E4585", "--sub", "sand=#E6D3A3"]
     assert run_derive(repo_copy, *args) == 0
     first = (repo_copy / "themes/05-olive-plum/theme.json").read_bytes()
     findings = check.run_checks(repo_copy)
@@ -191,3 +191,79 @@ def test_dry_run_writes_nothing(repo_copy: Path, capsys):
 def test_dump_theme_round_trips():
     data = load(REPO, "04-slate-teal")
     assert json.loads(derive.dump_theme(data)) == data
+
+
+# --------------------------------------------------------------------------- 種色の判定と提案
+
+
+def checks_for(base: str, accent: str, sub: str):
+    return {c.key: c for c in tl.seed_checks({"base": "b", "accent": "a", "sub": "s"}, {"base": base, "accent": accent, "sub": sub})}
+
+
+def test_seed_checks_of_committed_themes():
+    expected = {"01": [], "02": [], "03": [], "04": []}
+    for theme in tl.load_themes(REPO):
+        palette = theme.palette_hex()
+        checks = tl.seed_checks(theme.seeds, {k: palette[n] for k, n in theme.seeds.items()})
+        assert [c.key for c in checks if not c.ok] == expected[theme.id]
+    c = checks_for("#DCD5C8", "#A2A2AD", "#1F1E63")["accent"]
+    assert (c.proposal_tone, c.proposal_hex) == (61, "#92929D")
+    c = checks_for("#34485E", "#3C7D9B", "#5B9F8A")["sub"]
+    assert (c.proposal_tone, c.proposal_hex) == (73, "#7CC1AB")
+
+
+@pytest.mark.parametrize(
+    "seeds",
+    [
+        ("#7A8B99", "#B5562F", "#DDE6EC"),  # 中間の明度のベース
+        ("#2F6F73", "#3A9A9E", "#7CC4B5"),  # 似た色相
+        ("#C9B79C", "#C98B2B", "#5A4636"),  # アクセントが淡い
+        ("#808080", "#DDDDDD", "#999999"),  # 無彩色
+    ],
+)
+def test_proposals_meet_the_criteria_and_keep_the_hue(seeds):
+    checks = checks_for(*seeds)
+    hexes = dict(zip(tl.SEED_KEYS, seeds))
+    for key, c in checks.items():
+        if c.ok:
+            continue
+        assert c.proposal_hex is not None and c.proposal_ratio >= c.minimum
+        hexes[key] = c.proposal_hex
+        _, chroma, hue = cl.oklch(seeds[tl.SEED_KEYS.index(key)])
+        if chroma > 0.02:  # 無彩色は色相が定まらない
+            assert abs((cl.oklch(c.proposal_hex)[2] - hue + 180) % 360 - 180) < 3
+    # 提案の 3 色は、すべての基準を満たす
+    assert all(c.ok for c in tl.seed_checks({k: k for k in hexes}, hexes))
+
+
+def test_base_proposal_moves_to_the_side_where_the_sub_is_readable():
+    c = checks_for("#7A8B99", "#B5562F", "#DDE6EC")
+    assert c["base"].proposal_tone == 37  # 明るいサブが読めるよう、暗い帯にする（明るい側の 72 の方が近いが選ばない）
+    assert c["sub"].ok and c["sub"].against == "提案のベース（帯）"
+
+
+def test_derive_stops_and_proposes_when_seeds_fail(repo_copy: Path, capsys):
+    args = ["05", "trial", "--name", "Trial", "--base", "mid=#7A8B99", "--accent", "rust=#B5562F", "--sub", "mist=#DDE6EC"]
+    assert run_derive(repo_copy, *args) == 1
+    captured = capsys.readouterr()
+    assert "--keep-seeds" in captured.err
+    assert '--base mid=#495966 --accent rust=#B5562F --sub mist=#DDE6EC' in captured.out
+    assert not (repo_copy / "themes/05-trial").exists()
+    # 提案の色なら止まらない
+    proposed = ["05", "trial", "--name", "Trial", "--base", "mid=#495966", "--accent", "rust=#B5562F", "--sub", "mist=#DDE6EC"]
+    assert run_derive(repo_copy, *proposed) == 0
+    assert not any(n.startswith("種色の判定") for n in load(repo_copy, "05-trial")["notes"])
+
+
+def test_keep_seeds_records_the_decision(repo_copy: Path):
+    args = ["05", "trial", "--name", "Trial", "--base", "mid=#7A8B99", "--accent", "rust=#B5562F", "--sub", "mist=#DDE6EC"]
+    assert run_derive(repo_copy, *args, "--keep-seeds") == 0
+    notes = load(repo_copy, "05-trial")["notes"]
+    assert any(n.startswith("種色の判定: ベース `mid-57`") and "提案を採らず" in n for n in notes)
+    assert [f for f in check.run_checks(repo_copy) if f.level == "error"] == []
+
+
+def test_on_band_and_category_too_close_is_reported(capsys, repo_copy: Path):
+    args = ["05", "trial", "--name", "Trial", "--base", "teal=#2F6F73", "--accent", "aqua=#3A9A9E", "--sub", "mint=#7CC4B5", "--dry-run"]
+    assert run_derive(repo_copy, *args) == 0
+    assert "`on-band`" in capsys.readouterr().out

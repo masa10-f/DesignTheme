@@ -31,9 +31,9 @@
   <rect x="360.5" y="124.5" width="47" height="27" rx="3" fill="#3C7D9B" stroke="#DADDE1"/>
   <text x="420" y="136" font-size="14" fill="#242629">section-label</text>
   <text x="420" y="151" font-size="11" fill="#5C5F62">#3C7D9B · teal-49</text>
-  <rect x="360.5" y="164.5" width="47" height="27" rx="3" fill="#5B9F8A" stroke="#DADDE1"/>
+  <rect x="360.5" y="164.5" width="47" height="27" rx="3" fill="#7CC1AB" stroke="#DADDE1"/>
   <text x="420" y="176" font-size="14" fill="#242629">rule</text>
-  <text x="420" y="191" font-size="11" fill="#5C5F62">#5B9F8A · sea-green-61</text>
+  <text x="420" y="191" font-size="11" fill="#5C5F62">#7CC1AB · sea-green-73</text>
   <rect x="360.5" y="204.5" width="47" height="27" rx="3" fill="#F4F7FA" stroke="#DADDE1"/>
   <text x="420" y="216" font-size="14" fill="#242629">placeholder-bg</text>
   <text x="420" y="231" font-size="11" fill="#5C5F62">#F4F7FA · neutral-97</text>
@@ -48,8 +48,8 @@
   <text x="24" y="438" font-size="11" fill="#5C5F62">1. #34485E</text>
   <rect x="120.5" y="396.5" width="83" height="27" rx="3" fill="#3C7D9B" stroke="#DADDE1"/>
   <text x="120" y="438" font-size="11" fill="#5C5F62">2. #3C7D9B</text>
-  <rect x="216.5" y="396.5" width="83" height="27" rx="3" fill="#5B9F8A" stroke="#DADDE1"/>
-  <text x="216" y="438" font-size="11" fill="#5C5F62">3. #5B9F8A</text>
+  <rect x="216.5" y="396.5" width="83" height="27" rx="3" fill="#5CA08B" stroke="#DADDE1"/>
+  <text x="216" y="438" font-size="11" fill="#5C5F62">3. #5CA08B</text>
   <rect x="312.5" y="396.5" width="83" height="27" rx="3" fill="#B87252" stroke="#DADDE1"/>
   <text x="312" y="438" font-size="11" fill="#5C5F62">4. #B87252</text>
   <rect x="408.5" y="396.5" width="83" height="27" rx="3" fill="#505700" stroke="#DADDE1"/>
